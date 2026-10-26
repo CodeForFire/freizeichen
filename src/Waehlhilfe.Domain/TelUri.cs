@@ -5,8 +5,10 @@ namespace Waehlhilfe.Domain;
 
 /// <summary>
 /// A <c>tel:</c> link (RFC 3966) reduced to the number it names. <see cref="Number"/> holds only
-/// <c>0-9 * #</c>, with a leading <c>+</c> for a global number: the link comes from whatever page
-/// or document the user clicked, and whatever reaches the phone after <c>ATD</c> is executed by it.
+/// digits, with a leading <c>+</c> for a global number: the link comes from whatever page or
+/// document the user clicked, and whatever reaches the phone after <c>ATD</c> is executed by it.
+/// That rules out <c>*</c> and <c>#</c> too — on a landline <c>*21*&lt;number&gt;#</c> sets up call
+/// forwarding at the exchange.
 /// </summary>
 public sealed record TelUri
 {
@@ -82,7 +84,7 @@ public sealed record TelUri
 
         foreach (var c in raw)
         {
-            if (char.IsAsciiDigit(c) || (!global && c is '*' or '#'))
+            if (char.IsAsciiDigit(c))
             {
                 digits.Append(c);
             }

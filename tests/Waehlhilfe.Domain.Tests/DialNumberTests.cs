@@ -46,18 +46,14 @@ public sealed class DialNumberTests
         Assert.Equal("00891234567", Dial("tel:+49891234567", behindPbx).Digits);
     }
 
-    [Fact]
-    public void Keeps_a_service_code_as_written()
-    {
-        Assert.Equal("*31#0891234567", Dial("tel:*31#0891234567", Germany).Digits);
-    }
-
     [Theory]
     [InlineData("0;ATH")]
     [InlineData("0\r")]
     [InlineData("12345")]
     [InlineData("a")]
-    public void Refuses_an_outside_line_prefix_that_is_not_a_short_digit_string(string prefix)
+    [InlineData("*")]
+    [InlineData("#")]
+    public void Refuses_an_outside_line_prefix_that_is_not_up_to_four_digits(string prefix)
     {
         Assert.False(DialSettings.IsValidOutsideLinePrefix(prefix));
         Assert.Throws<ArgumentException>(() => Dial("tel:0891234567", Germany with { OutsideLinePrefix = prefix }));

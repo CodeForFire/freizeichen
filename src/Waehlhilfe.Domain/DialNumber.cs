@@ -1,6 +1,6 @@
 namespace Waehlhilfe.Domain;
 
-/// <summary>The exact string sent after <c>ATD</c>: only <c>0-9 * #</c>.</summary>
+/// <summary>The exact string sent after <c>ATD</c>: digits only.</summary>
 public sealed record DialNumber
 {
     private DialNumber(string digits) => Digits = digits;

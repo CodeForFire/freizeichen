@@ -12,5 +12,5 @@ public sealed record DialSettings(string PortName, string HomeCountryCode, strin
         code is { Length: >= 1 and <= 3 } && code[0] != '0' && code.All(char.IsAsciiDigit);
 
     public static bool IsValidOutsideLinePrefix(string? prefix) =>
-        prefix is { Length: <= 4 } && prefix.All(c => char.IsAsciiDigit(c) || c is '*' or '#');
+        prefix is { Length: <= 4 } && prefix.All(char.IsAsciiDigit);
 }
