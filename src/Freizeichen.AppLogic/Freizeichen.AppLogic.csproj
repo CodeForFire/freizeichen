@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Freizeichen.Domain\Freizeichen.Domain.csproj" />
+    <ProjectReference Include="..\Freizeichen.Modem\Freizeichen.Modem.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Freizeichen.AppLogic.Tests" />
+  </ItemGroup>
+
+</Project>

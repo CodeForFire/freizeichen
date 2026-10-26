@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Freizeichen.App/Freizeichen.App.csproj" />
+    <Project Path="src/Freizeichen.AppLogic/Freizeichen.AppLogic.csproj" />
+    <Project Path="src/Freizeichen.Domain/Freizeichen.Domain.csproj" />
+    <Project Path="src/Freizeichen.Modem/Freizeichen.Modem.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Freizeichen.App.Tests/Freizeichen.App.Tests.csproj" />
+    <Project Path="tests/Freizeichen.AppLogic.Tests/Freizeichen.AppLogic.Tests.csproj" />
+    <Project Path="tests/Freizeichen.Domain.Tests/Freizeichen.Domain.Tests.csproj" />
+    <Project Path="tests/Freizeichen.Modem.Tests/Freizeichen.Modem.Tests.csproj" />
+  </Folder>
+</Solution>

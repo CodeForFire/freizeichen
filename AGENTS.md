@@ -1,6 +1,6 @@
 # Agent instructions
 
-Wählhilfe registers as the operating system's `tel:` handler and dials the number on a Gigaset
+Freizeichen registers as the operating system's `tel:` handler and dials the number on a Gigaset
 DL500A over Bluetooth. It exists so that Lagebuch (CodeForFire/lagebuch) and every other program
 in the ELW can keep emitting plain `tel:` links; see CodeForFire/lagebuch#617 for how the
 protocol was found.
@@ -39,7 +39,7 @@ Einsatzkraft). Keep UI wording short and imperative; it is read in a command veh
   only when it needs that one's code; the body then says "Stacked on #N, review only the last
   commit".
 - A pull request that touches a view carries before/after PNGs rendered with the headless Skia
-  harness in `tests/Waehlhilfe.App.Tests`, attached with `gh pr create --attach`.
+  harness in `tests/Freizeichen.App.Tests`, attached with `gh pr create --attach`.
 
 ## GitHub Actions
 

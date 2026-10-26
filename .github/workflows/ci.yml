@@ -24,7 +24,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # Windows and macOS are the platforms Wählhilfe ships for; Linux is where the
+        # Windows and macOS are the platforms Freizeichen ships for; Linux is where the
         # DL500A is tested by hand today and where the format check runs.
         os: [ubuntu-latest, windows-latest, macos-latest]
     runs-on: ${{ matrix.os }}
@@ -40,14 +40,14 @@ jobs:
           dotnet-version: '10.0.x'
 
       - name: Restore
-        run: dotnet restore Waehlhilfe.slnx --locked-mode
+        run: dotnet restore Freizeichen.slnx --locked-mode
 
       - name: Build
-        run: dotnet build Waehlhilfe.slnx -c Release --no-restore
+        run: dotnet build Freizeichen.slnx -c Release --no-restore
 
       - name: Test
-        run: dotnet test Waehlhilfe.slnx -c Release --no-build
+        run: dotnet test Freizeichen.slnx -c Release --no-build
 
       - name: Format check
         if: matrix.os == 'ubuntu-latest'
-        run: dotnet format Waehlhilfe.slnx --verify-no-changes --no-restore
+        run: dotnet format Freizeichen.slnx --verify-no-changes --no-restore

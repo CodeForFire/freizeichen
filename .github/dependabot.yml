@@ -14,7 +14,7 @@ updates:
 
   # NuGet packages; Avalonia moves in lockstep, so its packages arrive as one pull request.
   # Dependabot rewrites only the lock file of the project that references a package directly:
-  # run `dotnet restore Waehlhilfe.slnx --force-evaluate` on its branch and push the result.
+  # run `dotnet restore Freizeichen.slnx --force-evaluate` on its branch and push the result.
   - package-ecosystem: nuget
     directory: /
     schedule:
