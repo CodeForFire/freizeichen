@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <AssemblyName>Freizeichen</AssemblyName>
+    <RootNamespace>Freizeichen.App</RootNamespace>
+    <Product>Freizeichen</Product>
+    <AssemblyTitle>Freizeichen</AssemblyTitle>
+    <Version>0.1.0</Version>
+    <!-- LibraryImport marshals the CoreFoundation strings of the macOS tel: registration. -->
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" />
+    <PackageReference Include="Avalonia.Desktop" />
+    <PackageReference Include="Avalonia.Fonts.Inter" />
+    <PackageReference Include="Avalonia.Themes.Fluent" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Freizeichen.AppLogic\Freizeichen.AppLogic.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Freizeichen.App.Tests" />
+  </ItemGroup>
+
+</Project>

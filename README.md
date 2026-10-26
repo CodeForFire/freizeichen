@@ -1,4 +1,6 @@
-# Wählhilfe
+# Freizeichen
+
+*Ein Klick auf die Nummer – das Telefon wählt.*
 
 Wählt `tel:`-Links über ein Gigaset DL500A – per Bluetooth, ohne Gigaset QuickSync, TAPI oder CSTA.
 
@@ -9,7 +11,7 @@ auf; das Gespräch wird am Telefon geführt.
 ## So funktioniert es
 
 Das DL500A stellt über Bluetooth eine serielle Schnittstelle (SPP) bereit und versteht dort
-AT-Befehle. Wählhilfe öffnet diese Schnittstelle, sendet `ATD <Nummer>` und schließt sie wieder.
+AT-Befehle. Freizeichen öffnet diese Schnittstelle, sendet `ATD <Nummer>` und schließt sie wieder.
 
 ## Status
 

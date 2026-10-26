@@ -1,5 +1,5 @@
-SLN := Waehlhilfe.slnx
-APP := src/Waehlhilfe.App/Waehlhilfe.App.csproj
+SLN := Freizeichen.slnx
+APP := src/Freizeichen.App/Freizeichen.App.csproj
 
 .PHONY: help restore build test ci format format-check run clean
 
