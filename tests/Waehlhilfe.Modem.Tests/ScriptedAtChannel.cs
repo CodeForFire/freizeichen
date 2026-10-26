@@ -29,6 +29,11 @@ internal sealed class ScriptedAtChannel : IAtChannel
     public Task WriteLineAsync(string line, CancellationToken cancellationToken = default)
     {
         ObjectDisposedException.ThrowIf(IsDisposed, this);
+        if (WriteFailure is not null)
+        {
+            throw WriteFailure;
+        }
+
         Written.Add(line);
         if (_script.TryGetValue(line, out var lines))
         {
@@ -50,6 +55,12 @@ internal sealed class ScriptedAtChannel : IAtChannel
     }
 
     public void Hangup() => _incoming.Writer.TryComplete();
+
+    /// <summary>The Bluetooth link breaks: every later read throws, as a serial stream does.</summary>
+    public void Break(Exception error) => _incoming.Writer.TryComplete(error);
+
+    /// <summary>The link is already gone when the next command is written.</summary>
+    public Exception? WriteFailure { get; set; }
 
     public ValueTask DisposeAsync()
     {

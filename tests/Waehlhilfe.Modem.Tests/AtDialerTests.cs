@@ -108,6 +108,29 @@ public sealed class AtDialerTests
         Assert.Equal(DialResult.NoResponse, result);
     }
 
+    [Fact]
+    public async Task Reports_no_response_when_the_link_breaks_while_reading()
+    {
+        var phone = new ScriptedAtChannel().Answer("AT", "OK");
+        phone.Break(new IOException("The device is not connected."));
+
+        var result = await Dialer(phone).DialAsync(Port, Number(), TestContext.Current.CancellationToken);
+
+        Assert.Equal(DialResult.NoResponse, result);
+        Assert.True(phone.IsDisposed);
+    }
+
+    [Fact]
+    public async Task Reports_no_response_when_the_link_breaks_while_writing()
+    {
+        var phone = new ScriptedAtChannel { WriteFailure = new IOException("The semaphore timeout period has expired.") };
+
+        var result = await Dialer(phone).DialAsync(Port, Number(), TestContext.Current.CancellationToken);
+
+        Assert.Equal(DialResult.NoResponse, result);
+        Assert.True(phone.IsDisposed);
+    }
+
     [Theory]
     [InlineData("ERROR", DialResult.Rejected)]
     [InlineData("+CME ERROR: 3", DialResult.Rejected)]

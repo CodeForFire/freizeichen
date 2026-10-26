@@ -79,6 +79,12 @@ public sealed class AtDialer
         {
             return DialResult.NoResponse;
         }
+        catch (IOException)
+        {
+            // The Bluetooth link went away after the port opened: phone switched off, out of
+            // range, or the OS dropped the RFCOMM channel.
+            return DialResult.NoResponse;
+        }
     }
 
     // Sends one command and reads up to its final result code; OK and CONNECT come back as
