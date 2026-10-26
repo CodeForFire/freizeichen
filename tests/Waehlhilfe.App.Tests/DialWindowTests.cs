@@ -17,12 +17,18 @@ public sealed class DialWindowTests
     private readonly FakeDialer _dialer = new();
     private readonly FakeTimeProvider _time = new();
 
-    private DialWindow Open(string link = "tel:+49 89 1234567")
+    private DialWindow Open(string link = "tel:+49 89 1234567", bool armed = true)
     {
         var settings = DialSettings.Default with { PortName = "COM7" };
         var window = new DialWindow { DataContext = new DialViewModel(link, settings, _dialer, _time) };
         window.Show();
         Dispatcher.UIThread.RunJobs();
+        if (armed)
+        {
+            _time.Advance(DialViewModel.ArmDelay);
+            Dispatcher.UIThread.RunJobs();
+        }
+
         return window;
     }
 
@@ -43,6 +49,19 @@ public sealed class DialWindowTests
         window.Press(PhysicalKey.Enter);
 
         Assert.Equal([("COM7", "0891234567")], _dialer.Dialled);
+    }
+
+    // The window takes focus when a link arrives; an Enter that was meant for the program the
+    // Lagebuchführer was typing in must not place the call.
+    [AvaloniaFact]
+    public void Enter_right_after_the_window_opens_does_not_dial()
+    {
+        var window = Open(armed: false);
+
+        window.Press(PhysicalKey.Enter);
+
+        Assert.Empty(_dialer.Dialled);
+        Assert.False(window.FindControl<Button>("DialButton")?.IsEffectivelyEnabled);
     }
 
     [AvaloniaFact]

@@ -22,7 +22,10 @@ internal sealed partial class WaehlhilfeApp : Application
             desktop.ShutdownMode = ShutdownMode.OnLastWindowClose;
 
             // Subscribed before anything awaits, so a link that launched the app is not missed.
+            // One dial window at a time: a second link replaces the first instead of stacking
+            // windows a stray keystroke could confirm.
             var linkArrived = false;
+            DialWindow? dialWindow = null;
             if (this.TryGetFeature<IActivatableLifetime>() is { } activation)
             {
                 activation.Activated += (_, e) =>
@@ -30,7 +33,10 @@ internal sealed partial class WaehlhilfeApp : Application
                     if (e is ProtocolActivatedEventArgs { Kind: ActivationKind.OpenUri } link)
                     {
                         linkArrived = true;
-                        new DialWindow { DataContext = root.Dial(link.Uri.OriginalString) }.Show();
+                        var previous = dialWindow;
+                        dialWindow = new DialWindow { DataContext = root.Dial(link.Uri.OriginalString) };
+                        dialWindow.Show();
+                        previous?.Close();
                     }
                 };
             }
