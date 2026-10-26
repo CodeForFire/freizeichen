@@ -7,11 +7,10 @@ namespace Freizeichen.App.Tests;
 
 internal static class TestAppBuilder
 {
-    // UseHeadlessDrawing = false keeps the real Skia text backend, and Inter is the font the app
-    // ships with, so PNG captures for pull requests look like the app.
+    // UseHeadlessDrawing = false keeps the real Skia text backend, so the embedded Lagebuch fonts
+    // rasterize and PNG captures for pull requests look like the app.
     public static AppBuilder BuildAvaloniaApp() =>
         AppBuilder.Configure<FreizeichenApp>()
             .UseSkia()
-            .WithInterFont()
             .UseHeadless(new AvaloniaHeadlessPlatformOptions { UseHeadlessDrawing = false });
 }
