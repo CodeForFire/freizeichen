@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WiX v5 authoring for the Freizeichen MSI. Built by .github/workflows/release.yml with:
+    wix build packaging/windows/Freizeichen.wxs -arch x64 -d Version=<v> -d PublishDir=<dir> -o out.msi
+
+  The UpgradeCode is fixed forever: it is what lets a new version replace the old one instead of
+  installing side by side.
+-->
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Package Name="Freizeichen"
+           Manufacturer="CodeForFire"
+           Version="$(Version)"
+           UpgradeCode="e2d3daf5-0643-4aa8-b45a-fc1de3e0eef3"
+           Scope="perMachine"
+           Compressed="yes">
+
+    <MajorUpgrade AllowSameVersionUpgrades="yes"
+                  DowngradeErrorMessage="Eine neuere Version von Freizeichen ist bereits installiert." />
+
+    <MediaTemplate EmbedCab="yes" />
+
+    <StandardDirectory Id="ProgramFiles64Folder">
+      <Directory Id="INSTALLFOLDER" Name="Freizeichen" />
+    </StandardDirectory>
+
+    <StandardDirectory Id="ProgramMenuFolder" />
+
+    <Feature Id="Main">
+      <Files Include="$(PublishDir)\**" Directory="INSTALLFOLDER" />
+      <ComponentRef Id="StartMenuShortcut" />
+      <ComponentRef Id="TelCapability" />
+    </Feature>
+
+    <!-- A shortcut component needs its own keypath, hence the HKCU value. -->
+    <Component Id="StartMenuShortcut" Directory="ProgramMenuFolder" Guid="*">
+      <Shortcut Id="FreizeichenShortcut"
+                Name="Freizeichen"
+                Description="tel:-Links über ein Gigaset-Telefon wählen"
+                Target="[INSTALLFOLDER]Freizeichen.exe"
+                WorkingDirectory="INSTALLFOLDER" />
+      <RegistryValue Root="HKCU" Key="Software\Freizeichen"
+                     Name="installed" Type="integer" Value="1" KeyPath="yes" />
+    </Component>
+
+    <!--
+      Registers Freizeichen as *capable* of opening tel: links. Windows lets no installer make itself
+      the default; the user picks it once under Default apps, which the settings window opens.
+      The names must match WindowsTelHandlerRegistration: ProgId "Freizeichen.tel" and the
+      RegisteredApplications value "Freizeichen".
+    -->
+    <Component Id="TelCapability" Directory="INSTALLFOLDER" Guid="*">
+      <RegistryValue Root="HKLM" Key="Software\Classes\Freizeichen.tel"
+                     Value="Freizeichen tel:-Link" Type="string" KeyPath="yes" />
+      <RegistryValue Root="HKLM" Key="Software\Classes\Freizeichen.tel\shell\open\command"
+                     Value="&quot;[INSTALLFOLDER]Freizeichen.exe&quot; &quot;%1&quot;" Type="string" />
+      <RegistryValue Root="HKLM" Key="Software\Freizeichen\Capabilities"
+                     Name="ApplicationName" Value="Freizeichen" Type="string" />
+      <RegistryValue Root="HKLM" Key="Software\Freizeichen\Capabilities"
+                     Name="ApplicationDescription" Value="Wählt tel:-Links über ein Gigaset-Telefon per Bluetooth." Type="string" />
+      <RegistryValue Root="HKLM" Key="Software\Freizeichen\Capabilities\URLAssociations"
+                     Name="tel" Value="Freizeichen.tel" Type="string" />
+      <RegistryValue Root="HKLM" Key="Software\RegisteredApplications"
+                     Name="Freizeichen" Value="Software\Freizeichen\Capabilities" Type="string" />
+    </Component>
+  </Package>
+</Wix>
