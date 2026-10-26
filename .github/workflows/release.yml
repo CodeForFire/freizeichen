@@ -104,8 +104,11 @@ jobs:
           path: '*.msi'
           if-no-files-found: error
 
+  # macOS runners bill at 10x in a private repository: the .dmg is built for a release tag or a
+  # manual run, not for every pull request that touches the packaging.
   macos:
     needs: version
+    if: github.event_name != 'pull_request'
     strategy:
       fail-fast: false
       matrix:

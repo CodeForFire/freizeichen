@@ -24,9 +24,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # Windows and macOS are the platforms Freizeichen ships for; Linux is where the
-        # DL500A is tested by hand today and where the format check runs.
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        # macOS runners bill at 10x in a private repository, so pull requests build on Linux and
+        # Windows only. macOS is built when a release is tagged (release.yml), and the code it
+        # alone runs (MacTelHandlerRegistration) is thin interop no test here could exercise.
+        os: [ubuntu-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     timeout-minutes: 20
     steps:
