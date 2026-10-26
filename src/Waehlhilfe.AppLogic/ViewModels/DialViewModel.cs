@@ -16,11 +16,19 @@ public sealed partial class DialViewModel : ObservableObject
     /// <summary>Long enough to read „Gewählt“, short enough not to stand in the way.</summary>
     public static readonly TimeSpan CloseDelay = TimeSpan.FromSeconds(2);
 
+    /// <summary>
+    /// How long after opening the window ignores a confirm. A link can arrive while the
+    /// Lagebuchführer types elsewhere; the window takes focus, and an Enter meant for another
+    /// program must not place the call.
+    /// </summary>
+    public static readonly TimeSpan ArmDelay = TimeSpan.FromSeconds(1);
+
     private readonly IDialer _dialer;
     private readonly TimeProvider _time;
     private readonly string _portName;
     private readonly DialNumber? _number;
     private CancellationTokenSource? _dialing;
+    private bool _armed;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(DialCommand))]
@@ -51,6 +59,7 @@ public sealed partial class DialViewModel : ObservableObject
             : string.IsNullOrWhiteSpace(_portName)
                 ? (DialMessages.For(DialResult.PortNotSet, _portName), true)
                 : ("Über das Telefon wählen?", false);
+        _ = ArmAfterDelayAsync();
     }
 
     public event EventHandler? CloseRequested;
@@ -60,7 +69,7 @@ public sealed partial class DialViewModel : ObservableObject
 
     public bool CanDial => _number is not null && !string.IsNullOrWhiteSpace(_portName);
 
-    private bool CanStartDial() => CanDial && !IsBusy;
+    private bool CanStartDial() => CanDial && _armed && !IsBusy;
 
     [RelayCommand(CanExecute = nameof(CanStartDial))]
     [SuppressMessage("Design", "CA1031", Justification = "Any failure of the dial surfaces in Status; the window stays open to show it.")]
@@ -107,6 +116,13 @@ public sealed partial class DialViewModel : ObservableObject
     {
         _dialing?.Cancel();
         CloseRequested?.Invoke(this, EventArgs.Empty);
+    }
+
+    private async Task ArmAfterDelayAsync()
+    {
+        await Task.Delay(ArmDelay, _time);
+        _armed = true;
+        DialCommand.NotifyCanExecuteChanged();
     }
 
     private async Task CloseAfterDelayAsync()

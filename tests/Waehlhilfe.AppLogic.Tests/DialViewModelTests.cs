@@ -12,8 +12,41 @@ public sealed class DialViewModelTests
     private readonly FakeDialer _dialer = new();
     private readonly FakeTimeProvider _time = new();
 
-    private DialViewModel ViewModel(string link, DialSettings? settings = null) =>
-        new(link, settings ?? Settings, _dialer, _time);
+    private DialViewModel ViewModel(string link, DialSettings? settings = null)
+    {
+        var vm = new DialViewModel(link, settings ?? Settings, _dialer, _time);
+        _time.Advance(DialViewModel.ArmDelay);
+        return vm;
+    }
+
+    // A tel: link can arrive while the Lagebuchführer is typing elsewhere. The window comes to
+    // the front and takes focus, so an Enter meant for another program would confirm the call.
+    [Fact]
+    public async Task Ignores_a_confirm_that_arrives_before_the_window_is_armed()
+    {
+        var vm = new DialViewModel("tel:0891234567", Settings, _dialer, _time);
+
+        Assert.False(vm.DialCommand.CanExecute(null));
+        await vm.DialCommand.ExecuteAsync(null);
+        _time.Advance(DialViewModel.ArmDelay - TimeSpan.FromMilliseconds(1));
+        await vm.DialCommand.ExecuteAsync(null);
+
+        Assert.Empty(_dialer.Dialled);
+    }
+
+    [Fact]
+    public async Task Dials_once_armed()
+    {
+        var vm = new DialViewModel("tel:0891234567", Settings, _dialer, _time);
+        var changed = 0;
+        vm.DialCommand.CanExecuteChanged += (_, _) => changed++;
+
+        _time.Advance(DialViewModel.ArmDelay);
+        await vm.DialCommand.ExecuteAsync(null);
+
+        Assert.True(changed > 0);
+        Assert.Single(_dialer.Dialled);
+    }
 
     [Fact]
     public void Shows_the_number_that_will_be_dialled()
