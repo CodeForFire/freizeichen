@@ -99,9 +99,10 @@ Avalonia 12. Use the `avalonia-docs` MCP before reaching for an API from memory.
 ## Security
 
 The number arrives from a `tel:` link, which any web page or document can produce: it is
-**hostile input**. It reaches the phone only after `TelUri` has reduced it to `0-9 * #` and a
+**hostile input**. It reaches the phone only after `TelUri` has reduced it to digits and a
 length cap — never a `;`, `\r`, `\n` or letter, which would let a link append its own AT
-commands. A security fix gets a test that replays the attack. Dialling always goes through the
+commands, and never `*` or `#`, which on a landline would let it set up call forwarding
+(`*21*<number>#`) at the exchange. A security fix gets a test that replays the attack. Dialling always goes through the
 confirm window; nothing dials silently.
 
 ## Tests
