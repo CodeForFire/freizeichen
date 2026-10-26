@@ -8,6 +8,7 @@
   <ItemGroup>
     <PackageReference Include="Avalonia.Headless.XUnit" />
     <PackageReference Include="Avalonia.Skia" />
+    <PackageReference Include="Microsoft.Extensions.TimeProvider.Testing" />
     <PackageReference Include="coverlet.collector" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="xunit.v3" />
@@ -16,6 +17,11 @@
 
   <ItemGroup>
     <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- One set of handwritten fakes for the view models and the views that bind them. -->
+    <Compile Include="..\Waehlhilfe.AppLogic.Tests\FakeDialer.cs" Link="FakeDialer.cs" />
   </ItemGroup>
 
   <ItemGroup>

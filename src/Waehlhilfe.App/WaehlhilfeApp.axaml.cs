@@ -1,19 +1,62 @@
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Avalonia.Threading;
 using Waehlhilfe.App.Views;
 
 namespace Waehlhilfe.App;
 
 internal sealed partial class WaehlhilfeApp : Application
 {
+    // How long macOS gets to deliver the link that launched the app before the settings open.
+    private static readonly TimeSpan LaunchLinkGrace = TimeSpan.FromMilliseconds(500);
+
     public override void Initialize() => AvaloniaXamlLoader.Load(this);
 
     public override void OnFrameworkInitializationCompleted()
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            desktop.MainWindow = new SettingsWindow();
+            var root = new CompositionRoot();
+            desktop.ShutdownMode = ShutdownMode.OnLastWindowClose;
+
+            // Subscribed before anything awaits, so a link that launched the app is not missed.
+            var linkArrived = false;
+            if (this.TryGetFeature<IActivatableLifetime>() is { } activation)
+            {
+                activation.Activated += (_, e) =>
+                {
+                    if (e is ProtocolActivatedEventArgs { Kind: ActivationKind.OpenUri } link)
+                    {
+                        linkArrived = true;
+                        new DialWindow { DataContext = root.Dial(link.Uri.OriginalString) }.Show();
+                    }
+                };
+            }
+
+            if (LaunchArguments.TelLink(desktop.Args ?? []) is { } telLink)
+            {
+                desktop.MainWindow = new DialWindow { DataContext = root.Dial(telLink) };
+            }
+            else if (OperatingSystem.IsMacOS())
+            {
+                // A tel: click starts the app with no arguments and the link follows as an Apple
+                // event; only when none comes was the app opened by hand.
+                DispatcherTimer.RunOnce(
+                    () =>
+                    {
+                        if (!linkArrived)
+                        {
+                            new SettingsWindow { DataContext = root.Settings() }.Show();
+                        }
+                    },
+                    LaunchLinkGrace);
+            }
+            else
+            {
+                desktop.MainWindow = new SettingsWindow { DataContext = root.Settings() };
+            }
         }
 
         base.OnFrameworkInitializationCompleted();
