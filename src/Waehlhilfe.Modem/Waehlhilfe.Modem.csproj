@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <PackageReference Include="System.IO.Ports" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Waehlhilfe.Domain\Waehlhilfe.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Waehlhilfe.Modem.Tests" />
+  </ItemGroup>
+
+</Project>

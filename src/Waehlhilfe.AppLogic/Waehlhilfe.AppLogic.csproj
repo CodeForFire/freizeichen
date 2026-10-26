@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Waehlhilfe.Domain\Waehlhilfe.Domain.csproj" />
+    <ProjectReference Include="..\Waehlhilfe.Modem\Waehlhilfe.Modem.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Waehlhilfe.AppLogic.Tests" />
+  </ItemGroup>
+
+</Project>

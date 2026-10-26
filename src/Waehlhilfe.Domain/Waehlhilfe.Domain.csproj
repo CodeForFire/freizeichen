@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Waehlhilfe.Domain.Tests" />
+  </ItemGroup>
+
+</Project>
