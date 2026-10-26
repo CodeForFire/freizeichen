@@ -20,14 +20,12 @@ Zeile, die Freizeichen sendet:
 
 ```sh
 make fake-phone                     # legt /dev/rfcomm9 an (fragt per sudo), SCENARIO=ok
-make run-fake                       # Einstellungen: /dev/rfcomm9 wählen, „Testen“
-make run-fake ARGS=tel:0891234567   # Wählfenster
+make run                            # Einstellungen: /dev/rfcomm9 wählen, „Verbindung testen“
+make run ARGS=tel:0891234567        # Wählfenster
 ```
 
 `SCENARIO` steuert die Antwort auf `ATD`: `ok`, `error`, `busy`, `nocarrier`, `nodialtone` oder
 `silent` – Letzteres antwortet gar nicht, wie das DL500A bei bestehender Audioverbindung.
-`make run-fake` startet Freizeichen mit `tools/pty-modem-lines.c`, weil ein Pseudo-Terminal keine
-DTR/RTS-Leitungen hat und der Port sonst nicht aufgeht.
 
 ## Status
 

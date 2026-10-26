@@ -9,7 +9,7 @@ prints every line it receives, so you can see exactly what a tel: link put on th
 
 --link makes the port appear in Freizeichen's port list (Linux lists /dev/rfcomm*, macOS
 /dev/cu.*). Linking into /dev needs root, so the script calls sudo for that step alone.
-Linux only so far; run Freizeichen with `make run-fake` so it can open the pty.
+Tried on Linux only.
 """
 
 import argparse

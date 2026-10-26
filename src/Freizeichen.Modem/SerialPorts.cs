@@ -61,8 +61,6 @@ public sealed class SerialPorts : IAtChannelFactory
         ArgumentException.ThrowIfNullOrWhiteSpace(portName);
         var port = new SerialPort(portName, BaudRate)
         {
-            DtrEnable = true,
-            RtsEnable = true,
             WriteTimeout = (int)AtDialer.ConnectTimeout.TotalMilliseconds,
         };
 
@@ -84,7 +82,24 @@ public sealed class SerialPorts : IAtChannelFactory
             throw new PortUnavailableException(portName, failure, e);
         }
 
+        RaiseModemLines(port);
         return new StreamAtChannel(port.BaseStream, port);
+    }
+
+    // DTR and RTS are raised once the port is open, and only where the device has them: a
+    // pseudo-terminal, such as the one tools/fake-dl500a.py plays the phone on, has no modem
+    // control lines, and asking for them before Open made Open itself fail.
+    private static void RaiseModemLines(SerialPort port)
+    {
+        try
+        {
+            port.DtrEnable = true;
+            port.RtsEnable = true;
+        }
+        catch (IOException)
+        {
+            // No modem control lines on this device: talk without them.
+        }
     }
 
     private static int TrailingNumber(string name)
