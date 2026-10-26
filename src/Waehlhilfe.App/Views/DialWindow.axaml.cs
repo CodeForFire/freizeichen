@@ -17,5 +17,21 @@ internal sealed partial class DialWindow : Window
         _viewModel?.CloseRequested += OnCloseRequested;
     }
 
+    // However the window goes — title bar, or a newer link replacing it — a dial still running
+    // behind it is cancelled, so no call is placed from a window nobody can see.
+    protected override void OnClosed(EventArgs e)
+    {
+        if (_viewModel is { } viewModel)
+        {
+            viewModel.CloseRequested -= OnCloseRequested;
+            if (viewModel.IsBusy)
+            {
+                viewModel.CancelCommand.Execute(null);
+            }
+        }
+
+        base.OnClosed(e);
+    }
+
     private void OnCloseRequested(object? sender, EventArgs e) => Close();
 }

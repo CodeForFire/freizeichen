@@ -87,6 +87,21 @@ public sealed class DialWindowTests
         Assert.False(window.IsVisible);
     }
 
+    // Closing the window — title bar, or a newer link replacing it — must not leave a dial running
+    // that nobody can see any more.
+    [AvaloniaFact]
+    public void Closing_the_window_during_a_dial_cancels_it()
+    {
+        _dialer.Hold();
+        var window = Open();
+        window.Press(PhysicalKey.Enter);
+
+        window.Close();
+        Dispatcher.UIThread.RunJobs();
+
+        Assert.True(_dialer.LastToken.IsCancellationRequested);
+    }
+
     [AvaloniaFact]
     public void A_refused_link_cannot_be_dialled_with_enter()
     {

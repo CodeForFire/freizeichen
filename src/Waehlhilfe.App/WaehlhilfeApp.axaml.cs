@@ -43,7 +43,7 @@ internal sealed partial class WaehlhilfeApp : Application
 
             if (LaunchArguments.TelLink(desktop.Args ?? []) is { } telLink)
             {
-                desktop.MainWindow = new DialWindow { DataContext = root.Dial(telLink) };
+                desktop.MainWindow = dialWindow = new DialWindow { DataContext = root.Dial(telLink) };
             }
             else if (OperatingSystem.IsMacOS())
             {
