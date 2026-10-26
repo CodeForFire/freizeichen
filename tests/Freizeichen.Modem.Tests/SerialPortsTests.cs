@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace Freizeichen.Modem.Tests;
 
 public sealed class SerialPortsTests
@@ -45,5 +47,18 @@ public sealed class SerialPortsTests
     public void Leaves_unrelated_exceptions_alone()
     {
         Assert.Null(SerialPorts.Classify(new InvalidOperationException()));
+    }
+
+    [Fact]
+    public async Task Talks_to_a_port_without_modem_control_lines()
+    {
+        Assert.SkipWhen(OperatingSystem.IsWindows(), "Pseudo-terminals are Unix only.");
+        var cancellationToken = TestContext.Current.CancellationToken;
+        using var terminal = PseudoTerminal.Open();
+
+        await using var channel = await new SerialPorts().OpenAsync(terminal.Port, cancellationToken);
+        await terminal.Phone.WriteAsync(Encoding.ASCII.GetBytes("OK\r\n"), cancellationToken);
+
+        Assert.Equal("OK", await channel.ReadLineAsync(cancellationToken));
     }
 }

@@ -1,7 +1,9 @@
 SLN := Freizeichen.slnx
 APP := src/Freizeichen.App/Freizeichen.App.csproj
+SCENARIO ?= ok
+PHONE_PORT ?= /dev/rfcomm9
 
-.PHONY: help restore build test ci format format-check run clean
+.PHONY: help restore build test ci format format-check run fake-phone clean
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  %-14s %s\n", $$1, $$2}'
@@ -28,6 +30,9 @@ format-check: ## Fail if dotnet format would change anything
 
 run: ## Run the app (ARGS=tel:0891234567 to open the dial window)
 	dotnet run --project $(APP) -- $(ARGS)
+
+fake-phone: ## Play a DL500A on /dev/rfcomm9 (SCENARIO=ok|error|busy|nocarrier|nodialtone|silent; Linux)
+	python3 tools/fake-dl500a.py --link $(PHONE_PORT) --scenario $(SCENARIO)
 
 clean: ## Remove build output
 	find src tests -type d \( -name bin -o -name obj \) -prune -exec rm -rf {} +
