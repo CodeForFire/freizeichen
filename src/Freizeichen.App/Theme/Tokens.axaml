@@ -1,0 +1,85 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <!-- Lagebuch's "dispatch console" tokens, trimmed to what Freizeichen uses. Freizeichen opens
+       from inside Lagebuch, so it wears the same theme; the names match Lagebuch's
+       Theme/Tokens.axaml so a change there can be carried across by diff. -->
+
+  <!-- Typography -->
+
+  <FontFamily x:Key="DisplayFont">avares://Freizeichen/Assets/Fonts#Oswald</FontFamily>
+  <FontFamily x:Key="BodyFont">avares://Freizeichen/Assets/Fonts#Barlow</FontFamily>
+  <FontFamily x:Key="MonoFont">avares://Freizeichen/Assets/Fonts#JetBrains Mono</FontFamily>
+
+  <!-- Raw colors -->
+
+  <Color x:Key="AppBgColor">#0B0E13</Color>
+  <Color x:Key="AppBgColor2">#10141C</Color>
+  <Color x:Key="SurfaceColor">#141A24</Color>
+  <Color x:Key="SurfaceRaisedColor">#1B2330</Color>
+  <Color x:Key="SurfaceTopColor">#222C3B</Color>
+
+  <Color x:Key="HairlineColor">#26303D</Color>
+  <Color x:Key="BorderStrongColor">#384556</Color>
+
+  <Color x:Key="TextPrimaryColor">#EEF2F8</Color>
+  <Color x:Key="TextSecondaryColor">#9AA7B8</Color>
+  <Color x:Key="TextMutedColor">#65728580</Color>
+
+  <Color x:Key="SignalColor">#FF3D2E</Color>
+  <Color x:Key="SignalHotColor">#FF5A3C</Color>
+  <Color x:Key="SignalDeepColor">#C71E12</Color>
+
+  <!-- Blocking red, softer than SignalColor, which is reserved for the emergency accent. -->
+  <Color x:Key="ErrorColor">#F87171</Color>
+
+  <!-- Keyboard focus, and nothing else. Deliberately not SignalColor: a red ring roaming every
+       control would wear out the meaning of red. -->
+  <Color x:Key="FocusColor">#2DD4E8</Color>
+
+  <Color x:Key="ActiveColor">#37D17C</Color>
+
+  <!-- Brushes -->
+
+  <SolidColorBrush x:Key="SurfaceBrush" Color="{StaticResource SurfaceColor}" />
+  <SolidColorBrush x:Key="SurfaceRaisedBrush" Color="{StaticResource SurfaceRaisedColor}" />
+  <SolidColorBrush x:Key="SurfaceTopBrush" Color="{StaticResource SurfaceTopColor}" />
+  <SolidColorBrush x:Key="HairlineBrush" Color="{StaticResource HairlineColor}" />
+  <SolidColorBrush x:Key="BorderStrongBrush" Color="{StaticResource BorderStrongColor}" />
+
+  <SolidColorBrush x:Key="TextPrimaryBrush" Color="{StaticResource TextPrimaryColor}" />
+  <SolidColorBrush x:Key="TextSecondaryBrush" Color="{StaticResource TextSecondaryColor}" />
+  <SolidColorBrush x:Key="TextMutedBrush" Color="{StaticResource TextMutedColor}" />
+
+  <SolidColorBrush x:Key="SignalBrush" Color="{StaticResource SignalColor}" />
+  <SolidColorBrush x:Key="SignalHotBrush" Color="{StaticResource SignalHotColor}" />
+  <SolidColorBrush x:Key="SignalDeepBrush" Color="{StaticResource SignalDeepColor}" />
+  <SolidColorBrush x:Key="ErrorBrush" Color="{StaticResource ErrorColor}" />
+  <SolidColorBrush x:Key="ActiveBrush" Color="{StaticResource ActiveColor}" />
+  <SolidColorBrush x:Key="FocusBrush" Color="{StaticResource FocusColor}" />
+
+  <!-- Fluent draws its focus adorner on every control that is :focus-visible (keyboard focus,
+       never a click): a 2px ring with a 1px line inside it. Recolouring only the brushes gives
+       every control the one focus edge; overriding the margin or thickness keys makes Fluent draw
+       no ring at all. -->
+  <SolidColorBrush x:Key="SystemControlFocusVisualPrimaryBrush" Color="{StaticResource FocusColor}" />
+  <SolidColorBrush x:Key="SystemControlFocusVisualSecondaryBrush" Color="{StaticResource AppBgColor}" />
+
+  <!-- Atmospheric app background: vertical charcoal wash -->
+  <LinearGradientBrush x:Key="AppBackgroundBrush" StartPoint="0%,0%" EndPoint="0%,100%">
+    <GradientStop Color="{StaticResource AppBgColor2}" Offset="0" />
+    <GradientStop Color="{StaticResource AppBgColor}" Offset="1" />
+  </LinearGradientBrush>
+
+  <!-- Signal accent gradient (brand bar, primary buttons) -->
+  <LinearGradientBrush x:Key="SignalGradientBrush" StartPoint="0%,0%" EndPoint="0%,100%">
+    <GradientStop Color="{StaticResource SignalHotColor}" Offset="0" />
+    <GradientStop Color="{StaticResource SignalDeepColor}" Offset="1" />
+  </LinearGradientBrush>
+
+  <!-- Metrics -->
+
+  <CornerRadius x:Key="RadiusSm">5</CornerRadius>
+  <x:Double x:Key="ControlHeight">36</x:Double>
+
+</ResourceDictionary>

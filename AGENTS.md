@@ -95,6 +95,12 @@ Avalonia 12. Use the `avalonia-docs` MCP before reaching for an API from memory.
 - App types are `internal` (CA1515): a view sets `x:ClassModifier="internal"` to match.
 - Code-behind is view-only: focus and forwarding events to commands.
 - Every text-less control gets an `AutomationProperties.Name`.
+- Freizeichen opens from inside Lagebuch and wears Lagebuch's theme: `Theme/Tokens.axaml` and
+  `Theme/Styles.axaml` are a trimmed copy of Lagebuch's, with the same token names so a change
+  there carries across by diff. Use the tokens and classes (`display`, `overline`, `secondary`,
+  `metric`, `status`, `Button.signal`), never a hard-coded colour or font in a view.
+- Every new top-level `Window` calls `WindowsTitleBar.ApplyDarkMode` in `OnOpened`. Windows 10
+  gets no dark title bar otherwise.
 
 ## Security
 

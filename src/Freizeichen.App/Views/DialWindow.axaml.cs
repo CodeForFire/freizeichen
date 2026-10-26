@@ -17,6 +17,12 @@ internal sealed partial class DialWindow : Window
         _viewModel?.CloseRequested += OnCloseRequested;
     }
 
+    protected override void OnOpened(EventArgs e)
+    {
+        base.OnOpened(e);
+        WindowsTitleBar.ApplyDarkMode(this);
+    }
+
     // However the window goes — title bar, or a newer link replacing it — a dial still running
     // behind it is cancelled, so no call is placed from a window nobody can see.
     protected override void OnClosed(EventArgs e)

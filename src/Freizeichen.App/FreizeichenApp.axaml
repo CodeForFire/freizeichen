@@ -2,8 +2,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="Freizeichen.App.FreizeichenApp"
              x:ClassModifier="internal"
-             RequestedThemeVariant="Default">
+             RequestedThemeVariant="Dark">
   <Application.Styles>
     <FluentTheme />
+    <StyleInclude Source="avares://Freizeichen/Theme/Styles.axaml" />
   </Application.Styles>
 </Application>

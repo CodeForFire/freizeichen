@@ -7,26 +7,25 @@
         Title="Freizeichen – Anrufen"
         Width="420" SizeToContent="Height"
         CanResize="False" Topmost="True"
-        WindowStartupLocation="CenterScreen">
-  <Window.Styles>
-    <Style Selector="TextBlock.status.error">
-      <Setter Property="Foreground" Value="{DynamicResource SystemControlErrorTextForegroundBrush}" />
-    </Style>
-  </Window.Styles>
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource AppBackgroundBrush}">
+  <DockPanel>
+    <!-- Lagebuch's signal-red brand bar. -->
+    <Border DockPanel.Dock="Top" Height="3" Background="{StaticResource SignalGradientBrush}" />
 
-  <StackPanel Margin="24" Spacing="12">
-    <TextBlock Text="Anrufen über das Telefon" Opacity="0.7" />
-    <SelectableTextBlock x:Name="NumberText"
-                         Text="{Binding Number}"
-                         FontSize="30" FontWeight="SemiBold"
-                         IsVisible="{Binding Number, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
-    <TextBlock x:Name="StatusText"
-               Classes="status" Classes.error="{Binding IsError}"
-               Text="{Binding Status}" TextWrapping="Wrap" />
-    <ProgressBar IsIndeterminate="True" IsVisible="{Binding IsBusy}" />
-    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8">
-      <Button x:Name="CancelButton" Content="Abbrechen" IsCancel="True" Command="{Binding CancelCommand}" />
-      <Button x:Name="DialButton" Content="Wählen" IsDefault="True" Classes="accent" Command="{Binding DialCommand}" />
+    <StackPanel Margin="24,20,24,24" Spacing="12">
+      <TextBlock Classes="overline" Text="ANRUFEN ÜBER DAS TELEFON" />
+      <SelectableTextBlock x:Name="NumberText" Classes="metric"
+                           Text="{Binding Number}"
+                           IsVisible="{Binding Number, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+      <TextBlock x:Name="StatusText"
+                 Classes="status" Classes.error="{Binding IsError}"
+                 Text="{Binding Status}" />
+      <ProgressBar IsIndeterminate="True" IsVisible="{Binding IsBusy}" />
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8" Margin="0,4,0,0">
+        <Button x:Name="CancelButton" Content="Abbrechen" IsCancel="True" Command="{Binding CancelCommand}" />
+        <Button x:Name="DialButton" Content="Wählen" IsDefault="True" Classes="signal" Command="{Binding DialCommand}" />
+      </StackPanel>
     </StackPanel>
-  </StackPanel>
+  </DockPanel>
 </Window>
