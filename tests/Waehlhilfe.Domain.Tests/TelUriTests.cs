@@ -55,13 +55,19 @@ public sealed class TelUriTests
         Assert.Equal("0891234567", uri.Number);
     }
 
+    // On a landline a code such as *21*<number># sets up call forwarding at the exchange: a
+    // link carrying one would divert every call to the Feuerwehr's line to a number of its
+    // choosing, behind a confirm window that shows something that looks like a number.
     [Theory]
-    [InlineData("tel:*31#0891234567", "*31#0891234567")]
-    [InlineData("tel:%2A31%230891234567", "*31#0891234567")]
-    public void Keeps_star_and_hash_service_codes(string link, string expected)
+    [InlineData("tel:*21*015112345678%23")]
+    [InlineData("tel:%2A21%2A015112345678%23")]
+    [InlineData("tel:##002#")]
+    [InlineData("tel:*31#0891234567")]
+    [InlineData("tel:0891234567#")]
+    [InlineData("tel:089*1234567")]
+    public void Rejects_a_service_code_that_would_reconfigure_the_line(string link)
     {
-        Assert.True(TelUri.TryParse(link, out var uri));
-        Assert.Equal(expected, uri.Number);
+        Assert.False(TelUri.TryParse(link, out _));
     }
 
     [Theory]
