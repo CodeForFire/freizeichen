@@ -1,0 +1,33 @@
+version: 2
+# Every ecosystem waits seven days before proposing a new release (`cooldown`), so a compromised
+# version that is caught and yanked in its first days never reaches a pull request. Security
+# updates ignore the cooldown.
+updates:
+  # Keeps the SHA-pinned GitHub Actions current.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 10
+    cooldown:
+      default-days: 7
+
+  # NuGet packages; Avalonia moves in lockstep, so its packages arrive as one pull request.
+  # Dependabot rewrites only the lock file of the project that references a package directly:
+  # run `dotnet restore Waehlhilfe.slnx --force-evaluate` on its branch and push the result.
+  - package-ecosystem: nuget
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 10
+    cooldown:
+      default-days: 7
+    groups:
+      avalonia:
+        patterns:
+          - "Avalonia*"
+    # Avalonia.Headless.XUnit 12.1.4 is built against xunit.v3 3.2.2; 4.x removed an overload it
+    # calls (AvaloniaUI/Avalonia#22072). Drop this once Avalonia ships a compatible package.
+    ignore:
+      - dependency-name: "xunit.v3"
+        update-types: ["version-update:semver-major"]

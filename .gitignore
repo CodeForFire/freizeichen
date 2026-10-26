@@ -1,0 +1,23 @@
+# Build output
+bin/
+obj/
+*.user
+.vs/
+.idea/
+TestResults/
+coverage/
+*.trx
+artifacts/
+publish/
+dist/
+out/
+
+# Signing material — never in the tree.
+*.p12
+*.pfx
+*.pass
+
+# Local tooling artefacts
+docs/superpowers/
+.superpowers/
+.claude/

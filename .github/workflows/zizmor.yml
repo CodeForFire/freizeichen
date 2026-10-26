@@ -1,0 +1,39 @@
+name: zizmor
+
+# Static analysis for the workflows themselves: template injection, persisted credentials,
+# over-broad permissions, dangerous triggers. A finding accepted on purpose carries an inline
+# `# zizmor: ignore[<audit>]` with the reason next to it.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    # Weekly, so a new audit or a new advisory against a pinned action finds a quiet repository.
+    - cron: '41 4 * * 1'
+
+permissions: {}
+
+concurrency:
+  group: zizmor-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  zizmor:
+    name: zizmor
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      # advanced-security: false — a private personal repository has no code scanning to take the
+      # SARIF, so findings fail the job and print in the log instead.
+      - name: Run zizmor
+        uses: zizmorcore/zizmor-action@53290badfa369cb0bf7ad16342cb62c2fa47ac7b # v0.8.0
+        with:
+          advanced-security: false
