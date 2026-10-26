@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace Waehlhilfe.Domain;
 
 /// <summary>How numbers are dialled and through which port.</summary>
@@ -8,9 +10,9 @@ public sealed record DialSettings(string PortName, string HomeCountryCode, strin
 {
     public static DialSettings Default { get; } = new(string.Empty, "49", string.Empty);
 
-    public static bool IsValidHomeCountryCode(string? code) =>
+    public static bool IsValidHomeCountryCode([NotNullWhen(true)] string? code) =>
         code is { Length: >= 1 and <= 3 } && code[0] != '0' && code.All(char.IsAsciiDigit);
 
-    public static bool IsValidOutsideLinePrefix(string? prefix) =>
+    public static bool IsValidOutsideLinePrefix([NotNullWhen(true)] string? prefix) =>
         prefix is { Length: <= 4 } && prefix.All(char.IsAsciiDigit);
 }

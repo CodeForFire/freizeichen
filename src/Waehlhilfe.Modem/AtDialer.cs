@@ -6,7 +6,7 @@ namespace Waehlhilfe.Modem;
 /// One dial is one connection: open the port, <c>AT</c>, <c>ATD &lt;number&gt;</c>, close. The
 /// DL500A keeps the call up on the base once the link is gone, so nothing is held open.
 /// </summary>
-public sealed class AtDialer
+public sealed class AtDialer : IDialer
 {
     /// <summary>Opening the port opens the Bluetooth link, which takes seconds.</summary>
     public static readonly TimeSpan ConnectTimeout = TimeSpan.FromSeconds(10);
