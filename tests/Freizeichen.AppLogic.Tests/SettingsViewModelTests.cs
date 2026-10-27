@@ -169,4 +169,20 @@ public sealed class SettingsViewModelTests
 
         Assert.True(vm.IsDefaultHandler);
     }
+
+    // When the answer has not changed, the line under TEL:-LINKS stays as it was; the status is the
+    // only sign the check ran at all.
+    [Theory]
+    [InlineData(true, "Geprüft: Freizeichen öffnet tel:-Links.")]
+    [InlineData(false, "Geprüft: Ein anderes Programm öffnet tel:-Links.")]
+    public void Check_answers_in_the_status_even_when_nothing_changed(bool isDefault, string status)
+    {
+        _registration.IsDefault = isDefault;
+        var vm = ViewModel();
+
+        vm.RefreshDefaultHandlerCommand.Execute(null);
+
+        Assert.Equal(status, vm.Status);
+        Assert.False(vm.IsError);
+    }
 }

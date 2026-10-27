@@ -144,7 +144,15 @@ public sealed partial class SettingsViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void RefreshDefaultHandler() => IsDefaultHandler = _registration.IsDefaultHandler();
+    private void RefreshDefaultHandler()
+    {
+        IsDefaultHandler = _registration.IsDefaultHandler();
+        Show(
+            IsDefaultHandler
+                ? "Geprüft: Freizeichen öffnet tel:-Links."
+                : "Geprüft: Ein anderes Programm öffnet tel:-Links.",
+            isError: false);
+    }
 
     [SuppressMessage("Design", "CA1031", Justification = "Any failure of the test surfaces in Status.")]
     private async Task RunAsync(string port, Func<Task<DialResult>> test)

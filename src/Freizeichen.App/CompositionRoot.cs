@@ -29,6 +29,11 @@ internal sealed class CompositionRoot
             return new MacTelHandlerRegistration();
         }
 
+        if (OperatingSystem.IsLinux())
+        {
+            return new LinuxTelHandlerRegistration();
+        }
+
         return new UnsupportedTelHandlerRegistration();
     }
 }
