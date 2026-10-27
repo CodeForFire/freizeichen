@@ -24,6 +24,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <!-- The licences travel with the installers: the OFL requires its text next to the fonts.
+         Kept out of the single-file bundle so they sit beside the executable, readable. -->
+    <None Include="..\..\LICENSE" Link="LICENSE.txt" CopyToPublishDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
+    <None Include="..\..\THIRD-PARTY-NOTICES.md" Link="THIRD-PARTY-NOTICES.md" CopyToPublishDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
+    <None Include="Assets\Fonts\OFL.txt" Link="OFL.txt" CopyToPublishDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Freizeichen.AppLogic\Freizeichen.AppLogic.csproj" />
   </ItemGroup>
 

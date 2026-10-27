@@ -1,0 +1,65 @@
+name: Bug report
+description: Something in Freizeichen is broken or behaves unexpectedly
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug!
+        Please use **fictional phone numbers only** in screenshots and examples.
+        A security problem — for example a `tel:` link that dials something it should not —
+        belongs in a [private report](https://github.com/CodeForFire/freizeichen/security/advisories/new), not here.
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Installer file name or tag from [Releases](https://github.com/CodeForFire/freizeichen/releases), or the commit if you built it yourself
+      placeholder: v0.1.0
+    validations:
+      required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      options:
+        - Windows
+        - macOS
+        - Linux
+    validations:
+      required: true
+  - type: input
+    id: phone
+    attributes:
+      label: Phone and port
+      description: Phone model and firmware if known, and the port selected in the settings
+      placeholder: Gigaset DL500A, COM7
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: What exactly did you do? Where did the `tel:` link come from?
+      placeholder: |
+        1. Click a phone number in Lagebuch
+        2. ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behaviour
+      description: Include the status text Freizeichen showed, verbatim (e.g. „Telefon antwortet nicht. …“).
+    validations:
+      required: true
+  - type: textarea
+    id: attachments
+    attributes:
+      label: Screenshots / AT transcript
+      description: Screenshots, or the lines `make fake-phone` or a serial terminal showed. Fictional numbers only.
