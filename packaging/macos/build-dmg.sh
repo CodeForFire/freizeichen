@@ -56,5 +56,9 @@ codesign --force --deep --sign - "$APP_DIR"
 ln -s /Applications "$STAGE/Applications"
 mkdir -p "$OUT_DIR"
 DMG="$OUT_DIR/freizeichen-${VERSION}-macos-${ARCH}.dmg"
-hdiutil create -volname "Freizeichen" -srcfolder "$STAGE" -ov -format UDZO "$DMG" 1>&2
+# hdiutil sizes the image from -srcfolder on its own and came up short for the x64 app ("No space
+# left on device" while copying the executable). Measure the staged app and give it headroom; the
+# UDZO compression shrinks the finished .dmg back to its content either way.
+SIZE_MB=$(( $(du -sm "$APP_DIR" | cut -f1) * 3 / 2 + 20 ))
+hdiutil create -volname "Freizeichen" -srcfolder "$STAGE" -size "${SIZE_MB}m" -ov -format UDZO "$DMG" 1>&2
 echo "$DMG"
