@@ -150,6 +150,7 @@ make run                         # settings window
 make run ARGS=tel:0891234567     # dial window
 make fake-phone                  # a fake DL500A on /dev/rfcomm9 (Linux, needs sudo)
 make screenshots                 # regenerate docs/screenshots/ for this README
+make icon                        # re-render the app icon from src/Freizeichen.App/Assets/icon.svg
 make help                        # everything else
 ```
 
