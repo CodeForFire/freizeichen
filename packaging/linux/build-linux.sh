@@ -45,6 +45,60 @@ Categories=Network;Telephony;
 MimeType=x-scheme-handler/tel;
 DESKTOP
 
+# AppStream metadata: GNOME Software and KDE Discover read the licence, summary and age rating of
+# an installed app from here; without it they report an unknown, possibly proprietary licence.
+# The id is the reverse-DNS name macOS uses as well; the launchable ties it to the entry above.
+# (A .deb not yet installed still shows an unknown licence: PackageKit's apt backend reports
+# "unknown" for every package, whatever the package carries.)
+# The screenshots are the README's (ReadmeScreenshotTests), fetched by the software centre from
+# GitHub: a release points at its own tag, a dev build, which has none, at main.
+case "$VERSION" in
+  0.0.0-dev.*) SCREENSHOT_REF=main ;;
+  *) SCREENSHOT_REF="v${VERSION}" ;;
+esac
+SCREENSHOTS="https://raw.githubusercontent.com/CodeForFire/freizeichen/${SCREENSHOT_REF}/docs/screenshots"
+install -d "$ROOT/usr/share/metainfo"
+cat > "$ROOT/usr/share/metainfo/de.codeforfire.freizeichen.metainfo.xml" <<METAINFO
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>de.codeforfire.freizeichen</id>
+  <name>Freizeichen</name>
+  <summary>Wählt tel:-Links über ein Gigaset DL500A per Bluetooth</summary>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>MIT</project_license>
+  <developer id="de.codeforfire">
+    <name>CodeForFire</name>
+  </developer>
+  <description>
+    <p>
+      Freizeichen wird zum Standardprogramm für tel:-Links und wählt die Nummer über die
+      serielle Bluetooth-Schnittstelle eines Gigaset DL500A. Vor jedem Anruf zeigt es die Nummer
+      zur Bestätigung.
+    </p>
+  </description>
+  <launchable type="desktop-id">freizeichen.desktop</launchable>
+  <url type="homepage">https://github.com/CodeForFire/freizeichen</url>
+  <url type="bugtracker">https://github.com/CodeForFire/freizeichen/issues</url>
+  <provides>
+    <mediatype>x-scheme-handler/tel</mediatype>
+  </provides>
+  <screenshots>
+    <screenshot type="default">
+      <caption>Vor dem Wählen bestätigen</caption>
+      <image>${SCREENSHOTS}/dial.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Telefon einrichten und testen</caption>
+      <image>${SCREENSHOTS}/settings.png</image>
+    </screenshot>
+  </screenshots>
+  <content_rating type="oars-1.1"/>
+  <releases>
+    <release version="${VERSION}" date="$(date -u +%Y-%m-%d)"/>
+  </releases>
+</component>
+METAINFO
+
 cat > "$ROOT/usr/share/doc/freizeichen/copyright" <<'COPYRIGHT'
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: Freizeichen

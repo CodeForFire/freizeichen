@@ -179,9 +179,10 @@ jobs:
           VERSION: ${{ needs.version.outputs.version }}
         run: |
           sudo apt-get update
-          sudo apt-get install -y desktop-file-utils ./dist/*.deb
+          sudo apt-get install -y desktop-file-utils appstream ./dist/*.deb
           test -x /usr/bin/freizeichen
           desktop-file-validate /usr/share/applications/freizeichen.desktop
+          appstreamcli validate --no-net /usr/share/metainfo/de.codeforfire.freizeichen.metainfo.xml
           tar -tzf "dist/freizeichen-${VERSION}-linux-x64.tar.gz" | grep -qx "freizeichen-${VERSION}/Freizeichen"
 
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
