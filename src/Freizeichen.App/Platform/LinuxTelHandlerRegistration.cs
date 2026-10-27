@@ -1,3 +1,4 @@
+using System.Buffers;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Text;
@@ -18,6 +19,9 @@ internal sealed class LinuxTelHandlerRegistration : ITelHandlerRegistration
 
     private const string MimeType = "x-scheme-handler/tel";
     private static readonly TimeSpan XdgMimeTimeout = TimeSpan.FromSeconds(5);
+
+    // The characters that force an Exec argument into quotes (Desktop Entry spec, "The Exec key").
+    private static readonly SearchValues<char> ExecReservedCharacters = SearchValues.Create(" \t\n\"'\\><~|&;$*?#()`");
 
     private readonly string _applicationsDirectory;
     private readonly string? _executablePath;
@@ -69,11 +73,19 @@ internal sealed class LinuxTelHandlerRegistration : ITelHandlerRegistration
             .Append("MimeType=").Append(MimeType).Append(";\n")
             .ToString();
 
-    // The Desktop Entry spec quotes an Exec argument in double quotes and backslash-escapes ", `, $
-    // and \ inside them; the value as a whole is then a string, whose own escaping doubles every
-    // backslash. A literal % is written %% so it is not read as a field code.
+    // A path without the Desktop Entry spec's reserved characters is written bare: xdg-mime
+    // (xdg-utils 1.2) reads the first word of Exec literally, quotes included, and ignores a default
+    // whose program it cannot find. Any other path is quoted as the spec requires: double quotes,
+    // with ", `, $ and \ backslash-escaped inside them; the value as a whole is then a string,
+    // whose own escaping doubles every backslash. A literal % is always written %% so it is not
+    // read as a field code.
     private static string QuoteExecArgument(string argument)
     {
+        if (argument.AsSpan().IndexOfAny(ExecReservedCharacters) < 0)
+        {
+            return argument.Replace("%", "%%", StringComparison.Ordinal);
+        }
+
         var quoted = new StringBuilder("\"");
         foreach (var c in argument)
         {

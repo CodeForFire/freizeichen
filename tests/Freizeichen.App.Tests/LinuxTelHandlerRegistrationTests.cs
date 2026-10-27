@@ -23,8 +23,31 @@ public sealed class LinuxTelHandlerRegistrationTests : IDisposable
 
         var entry = await File.ReadAllLinesAsync(Path.Join(_applications, "freizeichen.desktop"), TestContext.Current.CancellationToken);
         Assert.Equal("[Desktop Entry]", entry[0]);
-        Assert.Contains("Exec=\"/opt/freizeichen/Freizeichen\" %u", entry);
+        Assert.Contains("Exec=/opt/freizeichen/Freizeichen %u", entry);
         Assert.Contains("MimeType=x-scheme-handler/tel;", entry);
+    }
+
+    // xdg-mime (xdg-utils 1.2) takes the first word of Exec literally, quotes included, and drops a
+    // default whose program it cannot find: a quoted plain path made "Prüfen" report another
+    // handler although the default was set.
+    [Theory]
+    [InlineData("/home/user/Freizeichen-1.0/bin/Freizeichen")]
+    [InlineData("/usr/lib/freizeichen/Freizeichen")]
+    public async Task Leaves_a_plain_executable_path_unquoted_so_xdg_mime_can_resolve_it(string executable)
+    {
+        await Registration(executable).MakeDefaultAsync(TestContext.Current.CancellationToken);
+
+        var entry = await File.ReadAllLinesAsync(Path.Join(_applications, "freizeichen.desktop"), TestContext.Current.CancellationToken);
+        Assert.Contains($"Exec={executable} %u", entry);
+    }
+
+    [Fact]
+    public async Task Quotes_a_path_with_a_space()
+    {
+        await Registration("/home/a b/Freizeichen").MakeDefaultAsync(TestContext.Current.CancellationToken);
+
+        var entry = await File.ReadAllLinesAsync(Path.Join(_applications, "freizeichen.desktop"), TestContext.Current.CancellationToken);
+        Assert.Contains("Exec=\"/home/a b/Freizeichen\" %u", entry);
     }
 
     [Fact]
