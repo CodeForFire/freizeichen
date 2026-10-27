@@ -78,10 +78,12 @@ internal sealed class LinuxTelHandlerRegistration : ITelHandlerRegistration
             .Append("MimeType=").Append(MimeType).Append(";\n")
             .ToString();
 
+    // Split on '/' rather than with Path: the entry holds a Linux path, and on Windows (where the
+    // tests also run) Path would turn the slashes into backslashes and split on a backslash too.
     // Icon is a plain string value, whose only escape a path can need is a doubled backslash; a
     // line break never gets here.
     private static string IconPath(string executablePath) =>
-        Path.Join(Path.GetDirectoryName(executablePath), IconFileName).Replace(@"\", @"\\", StringComparison.Ordinal);
+        (executablePath[..(executablePath.LastIndexOf('/') + 1)] + IconFileName).Replace(@"\", @"\\", StringComparison.Ordinal);
 
     // A path without the Desktop Entry spec's reserved characters is written bare: xdg-mime
     // (xdg-utils 1.2) reads the first word of Exec literally, quotes included, and ignores a default
