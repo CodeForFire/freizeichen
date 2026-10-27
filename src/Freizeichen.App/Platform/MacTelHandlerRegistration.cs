@@ -10,7 +10,7 @@ namespace Freizeichen.App.Platform;
 internal sealed partial class MacTelHandlerRegistration : ITelHandlerRegistration
 {
     /// <summary>Must match CFBundleIdentifier in packaging/macos/build-dmg.sh.</summary>
-    internal const string BundleId = "io.github.deepdiver1975.freizeichen";
+    internal const string BundleId = "de.codeforfire.freizeichen";
 
     private const string CoreFoundation = "/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation";
     private const string CoreServices = "/System/Library/Frameworks/CoreServices.framework/CoreServices";

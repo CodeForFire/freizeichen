@@ -29,7 +29,7 @@ cat > "$APP_DIR/Contents/Info.plist" <<PLIST
 <dict>
   <key>CFBundleName</key>              <string>Freizeichen</string>
   <key>CFBundleDisplayName</key>       <string>Freizeichen</string>
-  <key>CFBundleIdentifier</key>        <string>io.github.deepdiver1975.freizeichen</string>
+  <key>CFBundleIdentifier</key>        <string>de.codeforfire.freizeichen</string>
   <key>CFBundleVersion</key>           <string>$VERSION</string>
   <key>CFBundleShortVersionString</key><string>$VERSION</string>
   <key>CFBundleExecutable</key>        <string>Freizeichen</string>
