@@ -1,7 +1,7 @@
 name: Release
 
-# A version tag (v0.1.0) builds the Windows MSI and the macOS .dmg files and publishes them as a
-# GitHub release. A pull request that changes the packaging, or a run by hand, builds the same
+# A version tag (v0.1.0) builds the Windows MSI, the macOS .dmg files and the Linux .deb and
+# .tar.gz and publishes them as a GitHub release. A pull request that changes the packaging, or a run by hand, builds the same
 # installers as workflow artifacts only, so packaging is proven before anything is tagged.
 on:
   push:
@@ -148,9 +148,51 @@ jobs:
           path: dist/*.dmg
           if-no-files-found: error
 
+  linux:
+    needs: version
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Publish
+        env:
+          VERSION: ${{ needs.version.outputs.version }}
+        run: >
+          dotnet publish src/Freizeichen.App/Freizeichen.App.csproj -r linux-x64 ${{ env.PUBLISH_FLAGS }}
+          "-p:Version=${VERSION}" -o publish
+
+      - name: Build .deb and .tar.gz
+        env:
+          VERSION: ${{ needs.version.outputs.version }}
+        run: packaging/linux/build-linux.sh "$VERSION" publish dist
+
+      # Installing the .deb proves its dependencies resolve on a current Ubuntu.
+      - name: Check packages
+        env:
+          VERSION: ${{ needs.version.outputs.version }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y desktop-file-utils ./dist/*.deb
+          test -x /usr/bin/freizeichen
+          desktop-file-validate /usr/share/applications/freizeichen.desktop
+          tar -tzf "dist/freizeichen-${VERSION}-linux-x64.tar.gz" | grep -qx "freizeichen-${VERSION}/Freizeichen"
+
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: linux
+          path: dist/*
+          if-no-files-found: error
+
   release:
     if: github.event_name == 'push'
-    needs: [version, windows, macos]
+    needs: [version, windows, macos, linux]
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
@@ -179,6 +221,7 @@ jobs:
           **Installation**
           - **Windows**: \`freizeichen-${VERSION}-windows-x64.msi\` ausführen. Danach Freizeichen starten, den Bluetooth-Port wählen und „Als Standard festlegen“ drücken.
           - **macOS**: Die passende \`.dmg\` öffnen (\`arm64\` für Apple-Chips, \`x64\` für Intel) und Freizeichen in „Programme“ ziehen.
+          - **Linux** (x64): Debian/Ubuntu: \`sudo apt install ./freizeichen_*_amd64.deb\`, danach \`freizeichen\` starten. Andere Distributionen: \`freizeichen-${VERSION}-linux-x64.tar.gz\` entpacken und \`Freizeichen\` starten. Das Telefon mit \`sudo rfcomm bind 0 <MAC> 1\` als \`/dev/rfcomm0\` anlegen; der Benutzer braucht die Gruppe \`dialout\`. Beim \`.tar.gz\` „Als Standard festlegen“ drücken.
 
           **Die Pakete sind nicht signiert.** Beim ersten Start:
           - **Windows**: SmartScreen → „Weitere Informationen“ → „Trotzdem ausführen“.

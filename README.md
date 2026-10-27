@@ -56,7 +56,7 @@ Die Pakete liegen unter [Releases](../../releases).
 |---|---|---|
 | **Windows** (x64) | `freizeichen-<version>-windows-x64.msi` ausführen | SmartScreen → „Weitere Informationen“ → „Trotzdem ausführen“ |
 | **macOS** | `.dmg` öffnen (`arm64` für Apple-Chips, `x64` für Intel), Freizeichen in „Programme“ ziehen | Rechtsklick auf Freizeichen.app → „Öffnen“ |
-| **Linux** | kein Paket – aus dem Quellcode bauen, siehe [For developers](#for-developers) | Port mit `rfcomm bind` anlegen; „Als Standard festlegen“ trägt Freizeichen für `tel:`-Links ein |
+| **Linux** (x64) | Debian/Ubuntu: `sudo apt install ./freizeichen_<version>_amd64.deb`; sonst `freizeichen-<version>-linux-x64.tar.gz` entpacken | Port mit `rfcomm bind` anlegen, Benutzer in die Gruppe `dialout`; beim `.tar.gz` „Als Standard festlegen“ |
 
 Die Pakete sind noch nicht signiert. Ob ein Download unverändert ist, zeigt `SHA256SUMS.txt` im
 Release: `sha256sum -c SHA256SUMS.txt` (Linux) bzw. `shasum -a 256 -c SHA256SUMS.txt` (macOS).
@@ -155,7 +155,9 @@ make help                        # everything else
 
 On Linux the phone appears as a serial port only after `sudo rfcomm bind 0 <phone-mac> 1`.
 *Als Standard festlegen* writes `~/.local/share/applications/freizeichen.desktop`, pointing at the
-running executable, and makes it the `x-scheme-handler/tel` default with `xdg-mime`.
+running executable, and makes it the `x-scheme-handler/tel` default with `xdg-mime`. The `.deb`
+(built by `packaging/linux/build-linux.sh`) also installs a system entry under the same name in
+`/usr/share/applications`, so a user entry written later shadows it.
 
 ### Layout
 
