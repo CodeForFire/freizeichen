@@ -41,8 +41,8 @@ hand it input**. Whatever reaches the phone after `ATD` is executed by the phone
   in the first second after the window opens must not dial. Any path that places a call without
   the Lagebuchführer pressing *Wählen* is a vulnerability.
 - **The `tel:` registration**, meaning the Windows registry entries, the macOS bundle claim and
-  the Linux desktop entry with its `Exec` line. For
-  example, a way for Freizeichen's registration to be hijacked, or to hijack another scheme.
+  the Linux desktop entry with its `Exec` line. For example, a way for Freizeichen's
+  registration to be hijacked, or to hijack another scheme.
 - **Settings file handling**, such as path or deserialization issues in the stored settings.
 - **The release supply chain**: the build workflows, pinned actions, and the published installers
   and `SHA256SUMS.txt`.
