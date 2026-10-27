@@ -3,7 +3,7 @@ APP := src/Freizeichen.App/Freizeichen.App.csproj
 SCENARIO ?= ok
 PHONE_PORT ?= /dev/rfcomm9
 
-.PHONY: help restore build test ci format format-check run fake-phone screenshots clean
+.PHONY: help restore build test ci format format-check run fake-phone screenshots icon clean
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  %-14s %s\n", $$1, $$2}'
@@ -37,6 +37,9 @@ fake-phone: ## Play a DL500A on /dev/rfcomm9 (SCENARIO=ok|error|busy|nocarrier|n
 screenshots: ## Regenerate docs/screenshots/*.png for the README (ReadmeScreenshotTests with RENDER_OUT)
 	RENDER_OUT=$(CURDIR)/docs/screenshots dotnet test tests/Freizeichen.App.Tests -c Release \
 		--filter "FullyQualifiedName~ReadmeScreenshotTests"
+
+icon: ## Re-render the committed icon derivatives from src/Freizeichen.App/Assets/icon.svg
+	packaging/icon/build-icon-assets.sh
 
 clean: ## Remove build output
 	find src tests -type d \( -name bin -o -name obj \) -prune -exec rm -rf {} +

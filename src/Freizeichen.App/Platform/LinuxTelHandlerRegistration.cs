@@ -17,6 +17,9 @@ internal sealed class LinuxTelHandlerRegistration : ITelHandlerRegistration
 {
     internal const string EntryName = "freizeichen.desktop";
 
+    // Published beside the executable (Freizeichen.App.csproj): the tarball installs no icon theme.
+    private const string IconFileName = "freizeichen.svg";
+
     private const string MimeType = "x-scheme-handler/tel";
     private static readonly TimeSpan XdgMimeTimeout = TimeSpan.FromSeconds(5);
 
@@ -68,10 +71,17 @@ internal sealed class LinuxTelHandlerRegistration : ITelHandlerRegistration
             .Append("Name=Freizeichen\n")
             .Append("Comment=Wählt tel:-Links über ein Gigaset DL500A per Bluetooth\n")
             .Append("Exec=").Append(QuoteExecArgument(executablePath)).Append(" %u\n")
+            .Append("Icon=").Append(IconPath(executablePath)).Append('\n')
             .Append("Terminal=false\n")
+            .Append("StartupWMClass=Freizeichen\n")
             .Append("Categories=Network;Telephony;\n")
             .Append("MimeType=").Append(MimeType).Append(";\n")
             .ToString();
+
+    // Icon is a plain string value, whose only escape a path can need is a doubled backslash; a
+    // line break never gets here.
+    private static string IconPath(string executablePath) =>
+        Path.Join(Path.GetDirectoryName(executablePath), IconFileName).Replace(@"\", @"\\", StringComparison.Ordinal);
 
     // A path without the Desktop Entry spec's reserved characters is written bare: xdg-mime
     // (xdg-utils 1.2) reads the first word of Exec literally, quotes included, and ignores a default

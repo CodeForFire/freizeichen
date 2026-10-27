@@ -27,6 +27,35 @@ public sealed class LinuxTelHandlerRegistrationTests : IDisposable
         Assert.Contains("MimeType=x-scheme-handler/tel;", entry);
     }
 
+    // The tarball installs no icon theme, so the entry names the icon beside the executable.
+    [Fact]
+    public async Task Gives_the_entry_the_icon_beside_the_executable()
+    {
+        await Registration("/opt/freizeichen/Freizeichen").MakeDefaultAsync(TestContext.Current.CancellationToken);
+
+        var entry = await File.ReadAllLinesAsync(Path.Join(_applications, "freizeichen.desktop"), TestContext.Current.CancellationToken);
+        Assert.Contains("Icon=/opt/freizeichen/freizeichen.svg", entry);
+    }
+
+    [Fact]
+    public async Task Escapes_a_backslash_in_the_icon_path()
+    {
+        await Registration("/home/a\\b/Freizeichen").MakeDefaultAsync(TestContext.Current.CancellationToken);
+
+        var entry = await File.ReadAllLinesAsync(Path.Join(_applications, "freizeichen.desktop"), TestContext.Current.CancellationToken);
+        Assert.Contains("Icon=/home/a\\\\b/freizeichen.svg", entry);
+    }
+
+    // The window's WM_CLASS is the assembly name; without the match the dock shows a generic icon.
+    [Fact]
+    public async Task Ties_the_window_to_the_entry_by_its_window_class()
+    {
+        await Registration().MakeDefaultAsync(TestContext.Current.CancellationToken);
+
+        var entry = await File.ReadAllLinesAsync(Path.Join(_applications, "freizeichen.desktop"), TestContext.Current.CancellationToken);
+        Assert.Contains("StartupWMClass=Freizeichen", entry);
+    }
+
     // xdg-mime (xdg-utils 1.2) takes the first word of Exec literally, quotes included, and drops a
     // default whose program it cannot find: a quoted plain path made "Prüfen" report another
     // handler although the default was set.

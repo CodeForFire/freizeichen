@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Build an unsigned Freizeichen.app and wrap it in a drag-to-Applications .dmg. macOS-only
-# (hdiutil, codesign). Runs on the macos-latest CI runner.
+# (sips, iconutil, hdiutil, codesign). Runs on the macos-latest CI runner.
 #
 #   build-dmg.sh <version> <publish-dir> <arch> <out-dir>
 set -euo pipefail
@@ -20,6 +20,17 @@ install -d "$APP_DIR/Contents/MacOS" "$APP_DIR/Contents/Resources"
 cp -R "$PUBLISH_DIR"/. "$APP_DIR/Contents/MacOS/"
 chmod +x "$APP_DIR/Contents/MacOS/Freizeichen"
 
+# The Finder and Dock icon. sips cannot read the SVG master, so the .icns comes from its committed
+# 1024 render (packaging/icon/build-icon-assets.sh).
+ICON_PNG="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)/src/Freizeichen.App/Assets/icon-1024.png"
+ICONSET="$STAGE/Freizeichen.iconset"
+mkdir -p "$ICONSET"
+for s in 16 32 128 256 512; do
+  sips -z "$s" "$s" "$ICON_PNG" --out "$ICONSET/icon_${s}x${s}.png" >/dev/null
+  sips -z $((s * 2)) $((s * 2)) "$ICON_PNG" --out "$ICONSET/icon_${s}x${s}@2x.png" >/dev/null
+done
+iconutil -c icns "$ICONSET" -o "$APP_DIR/Contents/Resources/Freizeichen.icns"
+
 # CFBundleURLTypes is what lets Launch Services hand tel: links to the app; it delivers them as an
 # Apple event, not an argument. The bundle id must match MacTelHandlerRegistration.BundleId.
 cat > "$APP_DIR/Contents/Info.plist" <<PLIST
@@ -33,6 +44,7 @@ cat > "$APP_DIR/Contents/Info.plist" <<PLIST
   <key>CFBundleVersion</key>           <string>$VERSION</string>
   <key>CFBundleShortVersionString</key><string>$VERSION</string>
   <key>CFBundleExecutable</key>        <string>Freizeichen</string>
+  <key>CFBundleIconFile</key>          <string>Freizeichen</string>
   <key>CFBundlePackageType</key>       <string>APPL</string>
   <key>LSMinimumSystemVersion</key>    <string>12.0</string>
   <key>NSHighResolutionCapable</key>   <true/>

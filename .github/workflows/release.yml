@@ -96,6 +96,7 @@ jobs:
           wix build packaging/windows/Freizeichen.wxs -arch x64
           -d "Version=$env:MSI_VERSION"
           -d "PublishDir=$env:GITHUB_WORKSPACE\publish"
+          -d "IconFile=$env:GITHUB_WORKSPACE\src\Freizeichen.App\Assets\icon.ico"
           -o "freizeichen-$env:VERSION-windows-x64.msi"
 
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
@@ -168,6 +169,12 @@ jobs:
           dotnet publish src/Freizeichen.App/Freizeichen.App.csproj -r linux-x64 ${{ env.PUBLISH_FLAGS }}
           "-p:Version=${VERSION}" -o publish
 
+      # build-linux.sh renders the icon theme's sizes with rsvg-convert, which the runner lacks.
+      - name: Install packaging tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends librsvg2-bin
+
       - name: Build .deb and .tar.gz
         env:
           VERSION: ${{ needs.version.outputs.version }}
@@ -183,6 +190,8 @@ jobs:
           test -x /usr/bin/freizeichen
           desktop-file-validate /usr/share/applications/freizeichen.desktop
           appstreamcli validate --no-net /usr/share/metainfo/de.codeforfire.freizeichen.metainfo.xml
+          test -f /usr/share/icons/hicolor/48x48/apps/freizeichen.png
+          test -f /usr/share/icons/hicolor/scalable/apps/freizeichen.svg
           tar -tzf "dist/freizeichen-${VERSION}-linux-x64.tar.gz" | grep -qx "freizeichen-${VERSION}/Freizeichen"
 
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2

@@ -8,6 +8,7 @@
         Width="420" SizeToContent="Height"
         CanResize="False" Topmost="True"
         WindowStartupLocation="CenterScreen"
+        Icon="/Assets/icon.ico"
         Background="{StaticResource AppBackgroundBrush}">
   <DockPanel>
     <!-- Lagebuch's signal-red brand bar. -->

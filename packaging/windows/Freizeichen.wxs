@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   WiX v5 authoring for the Freizeichen MSI. Built by .github/workflows/release.yml with:
-    wix build packaging/windows/Freizeichen.wxs -arch x64 -d Version=<v> -d PublishDir=<dir> -o out.msi
+    wix build packaging/windows/Freizeichen.wxs -arch x64 -d Version=<v> -d PublishDir=<dir>
+      -d IconFile=<src/Freizeichen.App/Assets/icon.ico> -o out.msi
 
   The UpgradeCode is fixed forever: it is what lets a new version replace the old one instead of
   installing side by side.
@@ -18,6 +19,10 @@
                   DowngradeErrorMessage="Eine neuere Version von Freizeichen ist bereits installiert." />
 
     <MediaTemplate EmbedCab="yes" />
+
+    <!-- The Start menu shortcut and the entry under Installed apps. -->
+    <Icon Id="FreizeichenIcon" SourceFile="$(IconFile)" />
+    <Property Id="ARPPRODUCTICON" Value="FreizeichenIcon" />
 
     <StandardDirectory Id="ProgramFiles64Folder">
       <Directory Id="INSTALLFOLDER" Name="Freizeichen" />
@@ -37,7 +42,8 @@
                 Name="Freizeichen"
                 Description="tel:-Links über ein Gigaset-Telefon wählen"
                 Target="[INSTALLFOLDER]Freizeichen.exe"
-                WorkingDirectory="INSTALLFOLDER" />
+                WorkingDirectory="INSTALLFOLDER"
+                Icon="FreizeichenIcon" />
       <RegistryValue Root="HKCU" Key="Software\Freizeichen"
                      Name="installed" Type="integer" Value="1" KeyPath="yes" />
     </Component>

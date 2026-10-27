@@ -3,6 +3,7 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Assets\icon.ico</ApplicationIcon>
     <AssemblyName>Freizeichen</AssemblyName>
     <RootNamespace>Freizeichen.App</RootNamespace>
     <Product>Freizeichen</Product>
@@ -21,6 +22,8 @@
   <ItemGroup>
     <!-- Lagebuch's fonts (SIL OFL 1.1, see Assets/Fonts/README.md), referenced from Theme/Tokens.axaml. -->
     <AvaloniaResource Include="Assets\Fonts\*.ttf" />
+    <!-- The windows' icon. The master is Assets/icon.svg; packaging/icon/build-icon-assets.sh renders the rest. -->
+    <AvaloniaResource Include="Assets\icon.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,6 +32,9 @@
     <None Include="..\..\LICENSE" Link="LICENSE.txt" CopyToPublishDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
     <None Include="..\..\THIRD-PARTY-NOTICES.md" Link="THIRD-PARTY-NOTICES.md" CopyToPublishDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
     <None Include="Assets\Fonts\OFL.txt" Link="OFL.txt" CopyToPublishDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
+    <!-- The icon the Linux desktop entries name: LinuxTelHandlerRegistration points at it beside the
+         executable, and build-linux.sh renders the .deb's icon theme from it. -->
+    <None Include="Assets\icon.svg" Link="freizeichen.svg" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
   </ItemGroup>
 
   <ItemGroup>
