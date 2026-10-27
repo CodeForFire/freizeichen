@@ -40,6 +40,8 @@ Einsatzkraft). Keep UI wording short and imperative; it is read in a command veh
   commit".
 - A pull request that touches a view carries before/after PNGs rendered with the headless Skia
   harness in `tests/Freizeichen.App.Tests`, attached with `gh pr create --attach`.
+- The README's screenshots come from `ReadmeScreenshotTests`: run `make screenshots` and commit
+  `docs/screenshots/` whenever a view they show changes. Fixtures use fictional numbers only.
 
 ## GitHub Actions
 
