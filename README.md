@@ -2,7 +2,7 @@
 
 <p align="center">
   <strong>Ein Klick auf die Nummer – das Telefon wählt.</strong><br />
-  <code>tel:</code>-Links über ein Gigaset DL500A, per Bluetooth.
+  <code>tel:</code>-Links über ein Bluetooth-Telefon wählen – getestet mit dem Gigaset DL500A.
 </p>
 
 <p align="center">
@@ -19,7 +19,7 @@
 
 Ein Klick auf eine Telefonnummer in [Lagebuch](https://github.com/CodeForFire/lagebuch) – oder in
 jedem anderen Programm, das `tel:`-Links öffnet – zeigt ein kleines Fenster mit der Nummer. Nach
-*Wählen* baut das Gigaset DL500A den Anruf auf; das Gespräch wird am Telefon geführt.
+*Wählen* baut das Telefon den Anruf auf; das Gespräch wird am Telefon geführt.
 
 Kein Gigaset QuickSync, kein TAPI, keine CSTA-Lizenz, kein Server.
 
@@ -34,15 +34,19 @@ nichts über das Telefon wissen, es erzeugt nur gewöhnliche `tel:`-Links.
 
 ## So funktioniert es
 
-Das DL500A stellt über Bluetooth eine serielle Schnittstelle (SPP) bereit und versteht dort
+Das Telefon stellt über Bluetooth eine serielle Schnittstelle (SPP) bereit und versteht dort
 AT-Befehle wie ein Modem. Freizeichen öffnet diese Schnittstelle, sendet `ATD <Nummer>` und schließt
-sie wieder. Der Anruf bleibt danach an der Basis bestehen.
+sie wieder. Der Anruf bleibt danach am Telefon bestehen.
 
-Wie das Protokoll gefunden wurde: [CodeForFire/lagebuch#617](https://github.com/CodeForFire/lagebuch/issues/617).
+Freizeichen kennt kein bestimmtes Modell. Getestet ist das Gigaset DL500A; jedes Telefon, das über
+Bluetooth AT-Befehle annimmt, sollte ebenso gehen – siehe [Getestete Geräte](docs/geraete.md).
+
+Wie das Protokoll am DL500A gefunden wurde: [CodeForFire/lagebuch#617](https://github.com/CodeForFire/lagebuch/issues/617).
 
 ## Voraussetzungen
 
-- Ein **Gigaset DL500A** mit eingeschaltetem Bluetooth.
+- Ein **Telefon mit Bluetooth und AT-Befehlen**, z. B. das Gigaset DL500A – siehe
+  [Getestete Geräte](docs/geraete.md).
 - Ein PC mit Bluetooth, auf dem das Telefon **gekoppelt** ist.
 - Das Telefon ist **nicht als Audiogerät** (Freisprechen/Headset) mit dem PC verbunden. Solange
   diese Audioverbindung besteht, antwortet das DL500A auf der seriellen Schnittstelle nicht –
@@ -65,9 +69,10 @@ Release: `sha256sum -c SHA256SUMS.txt` (Linux) bzw. `shasum -a 256 -c SHA256SUMS
 
 <img src="docs/screenshots/settings.png" width="420" align="right" alt="Freizeichen-Einstellungen: Bluetooth-Port COM7, Ländervorwahl 49, Telefon antwortet. Alles bereit." />
 
-Freizeichen ohne Nummer starten – es öffnet die Einstellungen.
+Freizeichen ohne Nummer starten – es öffnet die Einstellungen. Wie das Telefon unter Windows,
+macOS und Linux gekoppelt wird, steht ausführlich in [Bluetooth einrichten](docs/bluetooth-einrichten.md).
 
-1. Das DL500A in den Bluetooth-Einstellungen des PCs **koppeln**, nicht als Audiogerät verbinden.
+1. Das Telefon in den Bluetooth-Einstellungen des PCs **koppeln**, nicht als Audiogerät verbinden.
 2. Unter **Bluetooth-Port** den Port des Telefons wählen: unter Windows ein ausgehender
    COM-Port, unter macOS `/dev/cu.…`, unter Linux `/dev/rfcomm0`.
 3. **Ländervorwahl** und, falls die Leitung eine braucht, **Amtsholung** eintragen,
@@ -100,8 +105,8 @@ Sicherheitslücken bitte vertraulich melden – siehe [SECURITY.md](SECURITY.md)
 <img src="docs/screenshots/dial-timeout.png" width="420" align="right" alt="Telefon antwortet nicht. Bluetooth am Telefon eingeschaltet? Ist es mit diesem PC als Audiogerät verbunden, diese Verbindung trennen." />
 
 **„Telefon antwortet nicht.“** Fast immer besteht noch eine Audioverbindung (Freisprechen) vom PC
-zum DL500A. Dann wird die serielle Verbindung nicht abgelehnt, sondern läuft ins Leere. In den
-Bluetooth-Einstellungen des PCs die Audioverbindung trennen – gekoppelt bleibt das Telefon.
+zum Telefon. Dann lehnt zumindest das DL500A die serielle Verbindung nicht ab, sie läuft ins Leere.
+In den Bluetooth-Einstellungen des PCs die Audioverbindung trennen – gekoppelt bleibt das Telefon.
 
 **„Port … nicht gefunden.“** Das Telefon ist nicht (mehr) gekoppelt, oder unter Linux fehlt
 `rfcomm bind`. Koppeln, dann in den Einstellungen **Aktualisieren**.
@@ -127,8 +132,9 @@ make run ARGS=tel:0891234567        # Wählfenster
 
 ## Mitmachen
 
-Fehler gefunden, Idee, anderes Telefon? [Issues](../../issues) und
-[Discussions](../../discussions) sind offen – in den Discussions gern auf Deutsch.
+Fehler gefunden, Idee? [Issues](../../issues) und [Discussions](../../discussions) sind offen –
+in den Discussions gern auf Deutsch. Freizeichen mit einem anderen Telefon ausprobiert? Bitte
+[Gerät melden](../../issues/new?template=device_report.yml), ob es geklappt hat oder nicht.
 Wie Pull Requests aussehen sollen, steht in [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ---
@@ -137,7 +143,8 @@ Wie Pull Requests aussehen sollen, steht in [CONTRIBUTING.md](CONTRIBUTING.md).
 
 Freizeichen is a small .NET 10 / Avalonia 12 desktop app for Windows, macOS and Linux. It
 registers as the operating system's `tel:` handler, shows a confirm window and sends `ATD` to a
-Gigaset DL500A over Bluetooth SPP. It exists so that [Lagebuch](https://github.com/CodeForFire/lagebuch)
+phone over Bluetooth SPP. Nothing in it is specific to one model; the Gigaset DL500A is the one it
+is tested with ([docs/geraete.md](docs/geraete.md)). It exists so that [Lagebuch](https://github.com/CodeForFire/lagebuch)
 and every other program in the ELW can keep emitting plain `tel:` links.
 
 ### Build and run

@@ -40,7 +40,7 @@
     <Component Id="StartMenuShortcut" Directory="ProgramMenuFolder" Guid="*">
       <Shortcut Id="FreizeichenShortcut"
                 Name="Freizeichen"
-                Description="tel:-Links über ein Gigaset-Telefon wählen"
+                Description="tel:-Links über ein Bluetooth-Telefon wählen"
                 Target="[INSTALLFOLDER]Freizeichen.exe"
                 WorkingDirectory="INSTALLFOLDER"
                 Icon="FreizeichenIcon" />
@@ -62,7 +62,7 @@
       <RegistryValue Root="HKLM" Key="Software\Freizeichen\Capabilities"
                      Name="ApplicationName" Value="Freizeichen" Type="string" />
       <RegistryValue Root="HKLM" Key="Software\Freizeichen\Capabilities"
-                     Name="ApplicationDescription" Value="Wählt tel:-Links über ein Gigaset-Telefon per Bluetooth." Type="string" />
+                     Name="ApplicationDescription" Value="Wählt tel:-Links über ein Bluetooth-Telefon." Type="string" />
       <RegistryValue Root="HKLM" Key="Software\Freizeichen\Capabilities\URLAssociations"
                      Name="tel" Value="Freizeichen.tel" Type="string" />
       <RegistryValue Root="HKLM" Key="Software\RegisteredApplications"

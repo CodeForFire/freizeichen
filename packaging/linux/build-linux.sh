@@ -54,7 +54,7 @@ cat > "$ROOT/usr/share/applications/freizeichen.desktop" <<'DESKTOP'
 [Desktop Entry]
 Type=Application
 Name=Freizeichen
-Comment=Wählt tel:-Links über ein Gigaset DL500A per Bluetooth
+Comment=Wählt tel:-Links über ein Bluetooth-Telefon
 Exec=/usr/bin/freizeichen %u
 Icon=freizeichen
 Terminal=false
@@ -81,7 +81,7 @@ cat > "$ROOT/usr/share/metainfo/de.codeforfire.freizeichen.metainfo.xml" <<METAI
 <component type="desktop-application">
   <id>de.codeforfire.freizeichen</id>
   <name>Freizeichen</name>
-  <summary>Wählt tel:-Links über ein Gigaset DL500A per Bluetooth</summary>
+  <summary>Wählt tel:-Links über ein Bluetooth-Telefon</summary>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>MIT</project_license>
   <developer id="de.codeforfire">
@@ -90,8 +90,8 @@ cat > "$ROOT/usr/share/metainfo/de.codeforfire.freizeichen.metainfo.xml" <<METAI
   <description>
     <p>
       Freizeichen wird zum Standardprogramm für tel:-Links und wählt die Nummer über die
-      serielle Bluetooth-Schnittstelle eines Gigaset DL500A. Vor jedem Anruf zeigt es die Nummer
-      zur Bestätigung.
+      serielle Bluetooth-Schnittstelle des Telefons, getestet mit dem Gigaset DL500A. Vor jedem
+      Anruf zeigt es die Nummer zur Bestätigung.
     </p>
   </description>
   <launchable type="desktop-id">freizeichen.desktop</launchable>
@@ -148,9 +148,10 @@ Homepage: https://github.com/CodeForFire/freizeichen
 Installed-Size: ${INSTALLED_KB}
 Depends: libc6, libstdc++6, libgcc-s1, zlib1g, libfontconfig1, libx11-6, libice6, libsm6, xdg-utils, hicolor-icon-theme, libicu72 | libicu74 | libicu76 | libicu77 | libicu78
 Recommends: bluez
-Description: Dial tel: links on a Gigaset DL500A over Bluetooth
- Freizeichen registers as the tel: handler and dials the number on a Gigaset
- DL500A through its Bluetooth serial port, after a confirm window.
+Description: Dial tel: links on a Bluetooth phone
+ Freizeichen registers as the tel: handler and dials the number on a phone
+ through its Bluetooth serial port, after a confirm window. Tested with the
+ Gigaset DL500A.
 CONTROL
 
 chmod -R u=rwX,go=rX "$ROOT"

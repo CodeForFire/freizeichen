@@ -1,7 +1,8 @@
 # Agent instructions
 
-Freizeichen registers as the operating system's `tel:` handler and dials the number on a Gigaset
-DL500A over Bluetooth. It exists so that Lagebuch (CodeForFire/lagebuch) and every other program
+Freizeichen registers as the operating system's `tel:` handler and dials the number on a phone
+that accepts AT commands over Bluetooth SPP. The Gigaset DL500A is the one it is tested with
+(`docs/geraete.md` lists tested devices). It exists so that Lagebuch (CodeForFire/lagebuch) and every other program
 in the ELW can keep emitting plain `tel:` links; see CodeForFire/lagebuch#617 for how the
 protocol was found.
 

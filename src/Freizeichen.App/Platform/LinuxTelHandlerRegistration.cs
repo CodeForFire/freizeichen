@@ -69,7 +69,7 @@ internal sealed class LinuxTelHandlerRegistration : ITelHandlerRegistration
             .Append("[Desktop Entry]\n")
             .Append("Type=Application\n")
             .Append("Name=Freizeichen\n")
-            .Append("Comment=Wählt tel:-Links über ein Gigaset DL500A per Bluetooth\n")
+            .Append("Comment=Wählt tel:-Links über ein Bluetooth-Telefon\n")
             .Append("Exec=").Append(QuoteExecArgument(executablePath)).Append(" %u\n")
             .Append("Icon=").Append(IconPath(executablePath)).Append('\n')
             .Append("Terminal=false\n")

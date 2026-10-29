@@ -49,8 +49,8 @@ hand it input**. Whatever reaches the phone after `ATD` is executed by the phone
 
 ## Out of scope
 
-- The Bluetooth security of the DL500A itself (pairing, SPP access by another paired device).
-  Report those to Gigaset.
+- The Bluetooth security of the phone itself (pairing, SPP access by another paired device).
+  Report those to its manufacturer.
 - Anyone who can already run code as the logged-in user can open the serial port directly and
   needs no help from Freizeichen.
 - The installers are not code-signed yet. This is a known limitation, not a vulnerability.

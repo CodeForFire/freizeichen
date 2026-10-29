@@ -226,7 +226,7 @@ jobs:
           PRERELEASE: ${{ needs.version.outputs.prerelease }}
         run: |
           cat > notes.md <<NOTES
-          Freizeichen ${VERSION} – wählt \`tel:\`-Links über ein Gigaset DL500A per Bluetooth.
+          Freizeichen ${VERSION} – wählt \`tel:\`-Links über ein Bluetooth-Telefon, getestet mit dem Gigaset DL500A.
 
           **Installation**
           - **Windows**: \`freizeichen-${VERSION}-windows-x64.msi\` ausführen. Danach Freizeichen starten, den Bluetooth-Port wählen und „Als Standard festlegen“ drücken.
