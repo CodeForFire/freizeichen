@@ -21,7 +21,7 @@
 
     <StackPanel Margin="24,20,24,24" Spacing="10">
       <TextBlock Classes="display" Text="Freizeichen" />
-      <TextBlock Classes="secondary" Text="Wählt tel:-Links über ein Gigaset DL500A per Bluetooth." />
+      <TextBlock Classes="secondary" Text="Wählt tel:-Links über ein Bluetooth-Telefon." />
 
       <TextBlock Classes="overline" Text="TELEFON" />
       <TextBlock Classes="secondary" Text="Das Telefon per Bluetooth mit diesem PC koppeln – nicht als Audiogerät verbinden. Sein Port erscheint dann hier." />
