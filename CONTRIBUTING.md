@@ -1,9 +1,9 @@
 # Contributing to Freizeichen
 
-Thanks for your interest in contributing! Freizeichen dials `tel:` links on a Gigaset DL500A over
-Bluetooth, so that [Lagebuch](https://github.com/CodeForFire/lagebuch) and every other program in
-the ELW can offer one-click calling. Every contribution is welcome, from a typo fix to support for
-another phone.
+Thanks for your interest in contributing! Freizeichen dials `tel:` links on a phone that speaks AT
+commands over Bluetooth (tested with the Gigaset DL500A), so that [Lagebuch](https://github.com/CodeForFire/lagebuch) and every other program in
+the ELW can offer one-click calling. Every contribution is welcome, from a typo fix to a report that
+another phone works — see [Getestete Geräte](docs/geraete.md).
 
 ## Before you start
 
