@@ -1,0 +1,62 @@
+name: Device report
+description: Freizeichen works — or does not work — with a phone that is not on the tested list yet
+labels: [documentation]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for trying Freizeichen with another phone! Every report, good or bad, goes into
+        [docs/geraete.md](https://github.com/CodeForFire/freizeichen/blob/main/docs/geraete.md).
+        Please use **fictional phone numbers only** in screenshots and examples.
+  - type: input
+    id: phone
+    attributes:
+      label: Phone
+      description: Manufacturer, model and firmware if known
+      placeholder: Gigaset DL500A
+    validations:
+      required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      options:
+        - Windows
+        - macOS
+        - Linux
+    validations:
+      required: true
+  - type: input
+    id: port
+    attributes:
+      label: Port
+      description: The port selected in the settings
+      placeholder: COM7, /dev/cu.DL500A or /dev/rfcomm0
+    validations:
+      required: true
+  - type: dropdown
+    id: probe
+    attributes:
+      label: „Verbindung testen“
+      options:
+        - „Telefon antwortet. Alles bereit.“
+        - Another message (please quote it below)
+    validations:
+      required: true
+  - type: dropdown
+    id: call
+    attributes:
+      label: „Testanruf“
+      options:
+        - The phone dialled and the call went through
+        - The phone did not dial (please describe below)
+        - Not tried
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes
+      description: |
+        Anything that was needed to make it work, e.g. disconnecting the audio connection, a different
+        RFCOMM channel or Amtsholung. If you can, include the answer to `AT+CGMI` from a serial terminal.
