@@ -14,7 +14,7 @@
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.2" />
     <PackageVersion Include="Microsoft.Extensions.TimeProvider.Testing" Version="11.0.0" />
     <PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.556" />
-    <PackageVersion Include="System.IO.Ports" Version="10.0.14" />
+    <PackageVersion Include="System.IO.Ports" Version="11.0.0" />
 
     <!-- xunit.v3 3.2.2 is what Avalonia.Headless.XUnit 12.1.4 is built against; every test
          project shares the one stack so the headless and plain tests run the same way. -->
